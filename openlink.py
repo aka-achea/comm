@@ -1,13 +1,13 @@
 #!/usr/bin/python
 #coding:utf-8
 # Python3
-# Version: 2018.10.22
+# Version: 20181203
 
 import random,time,requests
 from urllib.request import urlopen,Request,HTTPError
 from urllib.error import URLError
 
-def oplink(URL):
+def op_simple(URL): # use built-in
     headers = {
         "Accept":"text/html,application/xhtml+xml,application/xml; " \
             "q=0.9,image/webp,*/*;q=0.8",
@@ -39,10 +39,10 @@ def oplink(URL):
             html = 0
     return html,status #return array object
 
-def opsel(URL):    
+def op_sel(URL):     # use selenium
     pass
 
-def oprqs(URL,para=''):
+def op_requests(URL,para=''):  # use requets
     headers = {
         "Accept":"text/html,application/xhtml+xml,application/xml; " \
             "q=0.9,image/webp,*/*;q=0.8",
