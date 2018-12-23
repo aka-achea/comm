@@ -7,3 +7,6 @@ import shutil
 
 shutil.copy('J:\\DOC\\GH\\comm\\openlink.py','J:\\DOC\\GH\\xd\\openlink.py')
 shutil.copy('J:\\DOC\\GH\\comm\\openlink.py','J:\\DOC\\GH\\BM\\openlink.py')
+
+shutil.copy('J:\\DOC\\GH\\comm\\mylog.py','J:\\DOC\\GH\\BM\\mylog.py')
+shutil.copy('J:\\DOC\\GH\\comm\\mylog.py','J:\\DOC\\GH\\xd\\mylog.py')
