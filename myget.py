@@ -1,11 +1,11 @@
 #!/usr/bin/python
 #coding:utf-8
 # Python3
-# Version: 20181228
+# Version: 20181229
 
 import sys , os , shutil ,datetime , math
-import urllib.request as ur
-import urllib.parse as up
+from urllib.request import urlretrieve
+from urllib.parse import urlparse
 
 
 
@@ -42,7 +42,7 @@ def get_console_width():
 
 
 def filename_from_url(url):
-    fname = os.path.basename(up.urlparse(url).path)
+    fname = os.path.basename(urlparse(url).path)
     if len(fname.strip(" \n\t.")) == 0:
         return None
     return fname
@@ -66,7 +66,11 @@ def pbar(blocks, block_size, total_size):
         # print(dots)
         bar = '▇'*dots+'--'*(width-dots)
         # sys.stdout.write("|"+bar+'| '+percentrate+' '+str(dlsize)+'/'+str(total_size)+'\r')
-        sys.stdout.write(bar+' '+percentrate+' '+str(dlsize)+'/'+str(total_size)+'\r')
+        if rate == 1:
+            sys.stdout.write(bar+' '+percentrate+' '+str(dlsize)+'/'+str(total_size)+'\n')
+        else:
+            sys.stdout.write(bar+' '+percentrate+' '+str(dlsize)+'/'+str(total_size)+'\r')
+
         sys.stdout.flush()
 
 
@@ -88,7 +92,7 @@ def dl(url,out=None,pbar=pbar):
     tmpname = prefix+now+'.tmp'
     # print(tmpname)
 
-    local_filename, headers = ur.urlretrieve(url,tmpname,pbar )
+    local_filename, headers = urlretrieve(url,tmpname,pbar )
     # print(headers)
    
     # size = int(headers['Content-Length'])

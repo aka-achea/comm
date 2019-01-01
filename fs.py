@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #coding:utf-8
 # Python3
-# version: 20181210
+# version: 20181230
 
 import shutil,os
 
@@ -29,8 +29,9 @@ def d_move(src,dst):
 
 def f_move(src,dst):
     if os.path.exists(dst):
-        print('DST: '+os.path.getsize(dst))
-        print('SRC: '+os.path.getsize(src))
+        print(dst)
+        print('DST: '+str(os.path.getsize(dst)))
+        print('SRC: '+str(os.path.getsize(src)))
         if os.path.getsize(dst) < os.path.getsize(src):
             print('Replace small one')
             os.remove(dst)
