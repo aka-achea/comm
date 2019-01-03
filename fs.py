@@ -11,7 +11,7 @@ def g_dsize(dir):
         size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
     return size
 
-def d_move(src,dst):
+def d_move(src,dst): 
     if os.path.exists(dst):
         ds = g_dsize(dst)
         ss = g_dsize(src)
@@ -28,7 +28,7 @@ def d_move(src,dst):
         shutil.move(src,dst)
 
 def f_move(src,dst):
-    if os.path.exists(dst):
+    if os.path.exists(dst) and src != dst:
         print(dst)
         print('DST: '+str(os.path.getsize(dst)))
         print('SRC: '+str(os.path.getsize(src)))
