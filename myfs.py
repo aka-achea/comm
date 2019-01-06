@@ -11,21 +11,22 @@ def g_dsize(dir):
         size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
     return size
 
-def d_move(src,dst): 
+def d_move(src,parent): #move folder , folder itself don't exist
+    dst = os.path.join(parent,src.split('\\')[-1])
     if os.path.exists(dst):
-        ds = g_dsize(dst)
-        ss = g_dsize(src)
-        print('DST: '+ds)
-        print('SRC: '+ss)
+        ds = g_dsize(dst)/(1024*1024) #MB
+        ss = g_dsize(src)/(1024*1024)
+        print('DST: '+str(ds))
+        print('SRC: '+str(ss))
         if ds < ss:
             print('Replace small one')
             shutil.rmtree(dst)
-            shutil.move(src,dst) 
+            shutil.move(src,parent) 
         else:
             print("Already have big one")
             shutil.rmtree(src)
     else:
-        shutil.move(src,dst)
+        shutil.move(src,parent)
 
 def f_move(src,dst):
     if os.path.exists(dst) and src != dst:
