@@ -1,13 +1,13 @@
 #!/usr/bin/python
 #coding:utf-8
 # Python3
-# Version: 20181229
+# Version: 20190106
+
+# bug 404 forbidden
 
 import sys , os , shutil ,datetime , math
-from urllib.request import urlretrieve
 from urllib.parse import urlparse
-
-
+import urllib.request as req
 
 def get_console_width():
     #Code from http://bitbucket.org/techtonik/python-pager
@@ -39,8 +39,6 @@ def get_console_width():
         return sbi.srWindow.Right+1
     return 80
 
-
-
 def filename_from_url(url):
     fname = os.path.basename(urlparse(url).path)
     if len(fname.strip(" \n\t.")) == 0:
@@ -50,69 +48,61 @@ def filename_from_url(url):
 def pbar(blocks, block_size, total_size):
     if not total_size or total_size < 0:
         sys.stdout.write(str(block_size*blocks)+'\r')
-        sys.stdout.flush()
     else:
         dlsize = block_size*blocks
         if dlsize > total_size: dlsize = total_size
         rate = dlsize/total_size
-        # print(str(rate))
         percentrate = str(math.floor(100*rate))+'%'  
-        # print(percentrate)
         # width = get_console_width()-8
         width = 40
-        # dots = int(math.floor(rate*width))
         dots = int(math.floor(rate*width))
-
-        # print(dots)
         bar = '▇'*dots+'--'*(width-dots)
-        # sys.stdout.write("|"+bar+'| '+percentrate+' '+str(dlsize)+'/'+str(total_size)+'\r')
-        if rate == 1:
-            sys.stdout.write(bar+' '+percentrate+' '+str(dlsize)+'/'+str(total_size)+'\n')
+        if total_size > (1024*1024):
+            ts = str(total_size/(1024*1024))[:4]
+            ds = str(dlsize/(1024*1024))[:4]
+            unit = 'MB'
+        elif total_size > 1024:
+            ts = str(total_size/1024)[:4]
+            ds = str(dlsize/1024)[:4]
+            unit = 'KB' 
         else:
-            sys.stdout.write(bar+' '+percentrate+' '+str(dlsize)+'/'+str(total_size)+'\r')
-
-        sys.stdout.flush()
-
-
+            ts = str(total_size)
+            ds = str(dlsize) 
+            unit = 'B'          
+        e = '\n' if rate == 1 else '\r'
+        sys.stdout.write(bar+' '+percentrate+' '+ds+'/'+ts+unit+e)
+    sys.stdout.flush()
 
 def dl(url,out=None,pbar=pbar):     
-
     # detect of out is a directory
     outdir = None
     if out and os.path.isdir(out):
         outdir = out
         out = None
 
-    if out:
-        prefix = out        
+    fn = out if out else filename_from_url(url)
+    if os.path.exists(fn):
+        print('Already download --> Pass')
     else:
-        prefix = filename_from_url(url)
-    # print(prefix)
-    now = str(datetime.datetime.utcnow()).replace(':','')
-    tmpname = prefix+now+'.tmp'
-    # print(tmpname)
-
-    local_filename, headers = urlretrieve(url,tmpname,pbar )
-    # print(headers)
-   
-    # size = int(headers['Content-Length'])
-    # # # size = size/(1024*1024)
-    # print(size)    
-    ftype = '.'+str(headers['Content-Type']).split('/')[1]
-    # print(ftype)
-    if out:
-        shutil.move(tmpname,out)
-    else:
-        shutil.move(tmpname,prefix+now+ftype)
-
+        now = str(datetime.datetime.utcnow()).replace(':','')
+        tmpname = fn+now+'.tmp'   
+        # opener = req.build_opener()
+        # opener.addheaders = [('user-agent','Mozilla/5.0')]
+        # req.install_opener(opener)
+        local_filename, headers = req.urlretrieve(url,tmpname,pbar )
+        # print(headers)
+        # size = int(headers['Content-Length'])
+        # ftype = '.'+str(headers['Content-Type']).split('/')[1]
+        shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
+ 
 
 if __name__ == "__main__":
     # url = 'http://python.org/'
     # url = 'https://github.com/hfaran/progressive/blob/master/example.gif'
-    url = 'http://m128.xiami.net/761/96761/2102654949/1795287087_1479699396518.mp3?auth_key=1546570800-0-0-c5bc8bc5db6fb85dde5e6171bd821a81'
-    # url = 'https://epass.icbc.com.cn/ICBCChromeExtension.msi'
+    # url = 'http://m128.xiami.net/761/96761/2102654949/1795287087_1479699396518.mp3?auth_key=1546570800-0-0-c5bc8bc5db6fb85dde5e6171bd821a81'
+    url = 'https://epass.icbc.com.cn/ICBCChromeExtension.msi'
 
     out = 'tesget.mp3'
     # out = None
-    dl(url,out)
+    dl(url)
     # print(get_console_width())
