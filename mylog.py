@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #coding:utf-8
 # Python3
-# Version: 20181222
+# Version: 20190110
 
 # CRITICAL    50
 # ERROR   40
@@ -11,11 +11,30 @@
 # NOTSET  0
 
 
-import logging,coloredlogs
+import logging,coloredlogs,functools,inspect
+
+def get_funcname():
+    func = inspect.stack()[1][3]
+    mo = str(inspect.stack()[1][1]).split('\\')[-1].split('.')[0]
+    mf = mo+'.'+func
+    return mf
+    
+# experiment    
+def logwrap(logfile):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kw):
+            # global l
+            logfilelevel = 10
+            l = mylogger(logfile,logfilelevel,func.__name__)
+            print(l)
+            print(func.__name__)
+            return func(*args, **kw)
+        return wrapper
+    return decorator
 
 class mylogger():
     def __init__(self,logfile,logfilelevel,funcname):
-        self.funcname = funcname
         logging.basicConfig(level=logfilelevel,filename=logfile,filemode='w',
                             datefmt='%m-%d %H:%M:%S',
                             format='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')

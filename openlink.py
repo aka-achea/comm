@@ -3,7 +3,7 @@
 # Python3
 # Version: 20181208
 
-import random,time,requests
+import random,time,requests,sys
 from urllib.request import urlopen,Request,HTTPError
 from urllib.error import URLError
 
@@ -31,7 +31,7 @@ def op_simple(URL): # use built-in
         html = 0
     except URLError as e:
         print('Host no response, try again')
-        time.sleep(30)
+        mytimer(30)
         try:
             html = urlopen(req)
         except:
@@ -53,6 +53,12 @@ def op_requests(URL,para=''):  # use requets
         }
     html = requests.get(url=URL,params=para,headers=headers)
     return html
+
+def mytimer(n):
+    for i in range(n):
+        space = 1 if (60-i) > 9 else 2
+        sys.stdout.write('Wait'+' '*space+str(60-i)+'\r')
+        time.sleep(1)
 
 if __name__=='__main__':
 
