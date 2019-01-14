@@ -7,7 +7,11 @@
 
 import sys , os , shutil ,datetime , math
 from urllib.parse import urlparse
+from urllib import error
 import urllib.request as req
+
+# customized module
+from openlink import mytimer
 
 def get_console_width():
     #Code from http://bitbucket.org/techtonik/python-pager
@@ -89,7 +93,11 @@ def dl(url,out=None,pbar=pbar):
         # opener = req.build_opener()
         # opener.addheaders = [('user-agent','Mozilla/5.0')]
         # req.install_opener(opener)
-        local_filename, headers = req.urlretrieve(url,tmpname,pbar )
+        try:
+            local_filename, headers = req.urlretrieve(url,tmpname,pbar )
+        except error.ContentTooShortError as e:
+            mytimer(5)
+            local_filename, headers = req.urlretrieve(url,tmpname,pbar )
         # print(headers)
         # size = int(headers['Content-Length'])
         # ftype = '.'+str(headers['Content-Type']).split('/')[1]

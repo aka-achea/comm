@@ -22,6 +22,7 @@ def op_simple(URL): # use built-in
     req = Request(URL,headers=headers)
     try:
         html = urlopen(req)
+        sys.stdout.write('Wait'+'\r')
         time.sleep(random.uniform(2,4))
         #l.verbose(html.info())
         #l.debug(html.getcode())
