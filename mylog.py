@@ -17,9 +17,10 @@ def get_funcname():
     func = inspect.stack()[1][3]
     mo = str(inspect.stack()[1][1]).split('\\')[-1].split('.')[0]
     mf = mo+'.'+func
+    lineno = inspect.stack()[1][2]
     return mf
     
-# experiment    
+# experiment , not in use 
 def logwrap(logfile):
     def decorator(func):
         @functools.wraps(func)
