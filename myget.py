@@ -104,6 +104,7 @@ def dl(url,out=None,pbar=pbar):
         shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
  
 
+
 if __name__ == "__main__":
     # url = 'http://python.org/'
     # url = 'https://github.com/hfaran/progressive/blob/master/example.gif'
