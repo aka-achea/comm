@@ -57,9 +57,11 @@ def pbar(blocks, block_size, total_size):
         if dlsize > total_size: dlsize = total_size
         rate = dlsize/total_size
         percentrate = str(math.floor(100*rate))+'%'  
-        # width = get_console_width()-8
-        width = 40
+        width = int(get_console_width()/2-18)
+        # print(width)
+        # width = 40
         dots = int(math.floor(rate*width))
+        # print(dots)
         bar = '▇'*dots+'--'*(width-dots)
         if total_size > (1024*1024):
             ts = str(total_size/(1024*1024))[:4]
