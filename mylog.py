@@ -15,7 +15,7 @@ import logging,coloredlogs,functools,inspect
 
 def get_funcname():
     func = inspect.stack()[1][3]
-    mo = str(inspect.stack()[1][1]).split('\\')[-1].split('.')[0]
+    mo = str(inspect.stack()[1][1]).split('/')[-1].split('.')[0]
     mf = mo+'.'+func
     lineno = inspect.stack()[1][2]
     return mf
