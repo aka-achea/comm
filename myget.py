@@ -11,7 +11,7 @@ from urllib import error
 import urllib.request as req
 
 # customized module
-from openlink import mytimer
+from mytool import mywait
 
 def get_console_width():
     #Code from http://bitbucket.org/techtonik/python-pager
@@ -96,7 +96,7 @@ def dl(url,out=None,pbar=pbar):
         try:
             local_filename, headers = req.urlretrieve(url,tmpname,pbar )
         except error.ContentTooShortError as e:
-            mytimer(5)
+            mywait(5)
             local_filename, headers = req.urlretrieve(url,tmpname,pbar )
         # print(headers)
         # size = int(headers['Content-Length'])
