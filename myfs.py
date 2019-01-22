@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #coding:utf-8
 # Python3
-# version: 20181230
+# version: 20190122
 
 import shutil,os
 
@@ -16,31 +16,34 @@ def d_move(src,parent): #move folder , folder itself don't exist
     if os.path.exists(dst):
         ds = g_dsize(dst)/(1024*1024) #MB
         ss = g_dsize(src)/(1024*1024)
-        print('DST: '+str(ds))
-        print('SRC: '+str(ss))
+        # print('DST: '+str(ds))
+        # print('SRC: '+str(ss))
         if ds < ss:
-            print('Replace small one')
             shutil.rmtree(dst)
             shutil.move(src,parent) 
+            result = 'Replace small one'
         else:
-            print("Already have big one")
             shutil.rmtree(src)
+            result = "Already have big one"
     else:
         shutil.move(src,parent)
+        result = 'Move folder'
+    return result
 
 def f_move(src,dst):
     if os.path.exists(dst) and src != dst:
-        print(dst)
-        print('DST: '+str(os.path.getsize(dst)))
-        print('SRC: '+str(os.path.getsize(src)))
+        # # print(dst)
+        # print('DST: '+str(os.path.getsize(dst)))
+        # print('SRC: '+str(os.path.getsize(src)))
         if os.path.getsize(dst) < os.path.getsize(src):
-            print('Replace small one')
             os.remove(dst)
             shutil.move(src,dst)
+            result = 'Replace small one'
         else:
-            print("Already have big one")
             os.remove(src)
+            result = "Already have big one"
     else:
         shutil.move(src,dst)
-
+        result = 'Move file'
+    return result
 

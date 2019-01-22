@@ -7,6 +7,8 @@ import random,time,requests,sys
 from urllib.request import urlopen,Request,HTTPError
 from urllib.error import URLError
 
+from mytool import mywait
+
 def op_simple(URL): # use built-in
     headers = {
         "Accept":"text/html,application/xhtml+xml,application/xml; " \
