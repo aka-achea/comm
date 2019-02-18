@@ -2,3 +2,5 @@
 *.pyc
 *.pyc
 *.pyc
+*.pyc
+__pycache__/openlink.cpython-36.pyc
