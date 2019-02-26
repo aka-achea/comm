@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #coding:utf-8
-# Python3
+#tested in win
 # version: 20181127
 
 import mylog as ml

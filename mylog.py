@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #coding:utf-8
-# Python3
+#tested in win
 # Version: 20190110
 
 # CRITICAL    50
@@ -10,8 +10,20 @@
 # DEBUG   10
 # NOTSET  0
 
+"""
+C:\Program Files\Python3.7.2\lib\logging\__init__.py
+line 1037 add the following to fix \xa0 issue
+    
+        except UnicodeEncodeError:
+            import unicodedata
+            msg = unicodedata.normalize("NFKD",msg)
+            stream.write(msg + self.terminator)
+            self.flush()	
 
-import logging,coloredlogs,functools,inspect
+"""
+
+import logging,coloredlogs,functools,inspect,unicodedata
+
 
 def get_funcname():
     func = inspect.stack()[1][3]
