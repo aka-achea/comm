@@ -29,3 +29,5 @@ def mywait(n):
         sys.stdout.write('Wait'+' '*space+str(60-i)+'\r')
         time.sleep(1)
 
+if __name__ == "__main__":
+    pass

@@ -1,12 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #coding:utf-8
-# Python3
-# Version: 20181208
+# Version: 20190302
 
 import random,time,requests,sys
 from urllib.request import urlopen,Request,HTTPError
 from urllib.error import URLError
 
+# customized module
 from mytool import mywait
 
 def op_simple(URL): # use built-in

@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #coding:utf-8
-# Python3
-# Version: 20190106
+# tested in win
+# Version: 20190302
 
 # bug 404 forbidden
 

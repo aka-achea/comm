@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# Version: 20190110
+# Version: 20190302
 
 # CRITICAL    50
 # ERROR   40
@@ -23,6 +23,8 @@ line 1037 add the following to fix \xa0 issue
 """
 
 import logging,coloredlogs,functools,inspect,unicodedata
+
+
 
 
 def get_funcname():
@@ -105,7 +107,12 @@ if __name__=='__main__': #Usage
     # logfilelevel = 10 # Debug
     # logfile = 'E:\\app.log'
     # l = mylogger(logfile,logfilelevel,funcname)   
-
+    import sys
+    
+    if sys.platform == 'win32':
+        logfile = 'E:\\app.log'
+    else:
+        logfile = 'app.log'
     l = myconlog()   
 
     l.debug('This is Debug')

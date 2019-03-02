@@ -1,11 +1,21 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# version: 20181127
+# version: 20190302
 
+import sys
 import mylog as ml
+
+
+if sys.platform == 'win32':
+    logfile = 'E:\\app.log'
+else:
+    logfile = 'app.log'
+
+
+
 logfilelevel = 10 # Debug
-logfile = 'E:\\app.log'
+
 
 def modificate(text):
     funcname = 'modstr.modificate'    

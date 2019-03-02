@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #coding:utf-8
-# Python3
-# version: 20190122
+# tested in win
+# version: 20190302
 
 import shutil,os
 
@@ -12,7 +12,8 @@ def g_dsize(dir):
     return size
 
 def d_move(src,parent): #move folder , folder itself don't exist
-    dst = os.path.join(parent,src.split('\\')[-1])
+    # dst = os.path.join(parent,src.split('\\')[-1])
+    dst = os.path.join(parent,os.path.split(src)[1])
     if os.path.exists(dst):
         ds = g_dsize(dst)/(1024*1024) #MB
         ss = g_dsize(src)/(1024*1024)
@@ -47,3 +48,8 @@ def f_move(src,dst):
         result = 'Move file'
     return result
 
+
+if __name__ == "__main__":
+    src = r'M:\迅雷下载'
+    parent = r'M:\webproject'    
+    d_move(src,parent)
