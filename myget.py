@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# Version: 20190302
+# Version: 20190306
 
 # bug 404 forbidden
 
@@ -79,7 +79,8 @@ def pbar(blocks, block_size, total_size):
         sys.stdout.write(bar+' '+percentrate+' '+ds+'/'+ts+unit+e)
     sys.stdout.flush()
 
-def dl(url,out=None,pbar=pbar):     
+def dl(url,out=None,pbar=pbar):    
+    # use pbar = None to supress process bar
     # detect of out is a directory
     outdir = None
     if out and os.path.isdir(out):
