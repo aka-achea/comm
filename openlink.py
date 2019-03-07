@@ -45,7 +45,7 @@ def op_simple(URL): # use built-in
 def op_sel(URL):     # use selenium
     pass
 
-def op_requests(URL,para=''):  # use requets
+def op_requests(URL,para='',verify=True):  # use requets
     headers = {
         "Accept":"text/html,application/xhtml+xml,application/xml; " \
             "q=0.9,image/webp,*/*;q=0.8",
@@ -54,7 +54,7 @@ def op_requests(URL,para=''):  # use requets
         "Content-Type":"application/x-www-form-urlencoded",
         "User-Agent":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
         }
-    html = requests.get(url=URL,params=para,headers=headers)
+    html = requests.get(url=URL,params=para,headers=headers,verify=verify)
     return html
 
 
