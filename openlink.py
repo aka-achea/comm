@@ -9,6 +9,16 @@ from urllib.error import URLError
 # customized module
 from mytool import mywait
 
+headers = {
+    "Accept":"text/html,application/xhtml+xml,application/xml; " \
+        "q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Encoding":"text/html",
+    "Accept-Language":"en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,zh-TW;q=0.2",
+    "Content-Type":"application/x-www-form-urlencoded",
+    "User-Agent":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
+    }
+
+
 def op_simple(URL): # use built-in
     headers = {
         "Accept":"text/html,application/xhtml+xml,application/xml; " \
@@ -45,17 +55,9 @@ def op_simple(URL): # use built-in
 def op_sel(URL):     # use selenium
     pass
 
-def op_requests(URL,para='',verify=True):  # use requets
-    headers = {
-        "Accept":"text/html,application/xhtml+xml,application/xml; " \
-            "q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Encoding":"text/html",
-        "Accept-Language":"en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,zh-TW;q=0.2",
-        "Content-Type":"application/x-www-form-urlencoded",
-        "User-Agent":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
-        }
-    html = requests.get(url=URL,params=para,headers=headers,verify=verify)
-    return html
+def op_requests(url,para='',verify=False):  # use requets
+    return requests.get(url=url,params=para,headers=headers,verify=verify,timeout=30)
+     
 
 
 
