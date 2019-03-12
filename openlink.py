@@ -56,8 +56,11 @@ def op_sel(URL):     # use selenium
     pass
 
 def op_requests(url,para='',verify=False):  # use requets
-    return requests.get(url=url,params=para,headers=headers,verify=verify,timeout=30)
-     
+    try:
+        html = requests.get(url=url,params=para,headers=headers,verify=verify,timeout=60)
+    except requests.exceptions.ReadTimeout as e:
+        return e
+    return html
 
 
 
