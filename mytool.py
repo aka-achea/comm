@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-
+# version 20190313
 
 import time,sys
 
@@ -26,7 +26,7 @@ def mytimer(label='',trace=True):
 def mywait(n):
     for i in range(n):
         space = 1 if (60-i) > 9 else 2
-        sys.stdout.write('Wait'+' '*space+str(60-i)+'\r')
+        sys.stdout.write('Wait'+' '*space+str(n-i)+'\r')
         time.sleep(1)
 
 if __name__ == "__main__":
