@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# Version: 20190302
+# Version: 20190323
 
 # CRITICAL    50
 # ERROR   40
@@ -22,10 +22,19 @@ line 1037 add the following to fix \xa0 issue
 
 """
 
-import logging,coloredlogs,functools,inspect,unicodedata
+import logging
+import coloredlogs
+import functools
+import inspect
+import unicodedata
 
-
-
+levelmap = {
+            #'debug': {'color': 'magenta','bold': True},
+            'info': {'color': 'green','bold': True},
+            'warning': {'color': 'yellow','bold': True},
+            'error': {'color': 'red','bold': True},
+            'critical': {'color': 'magenta','bold': True}
+            }
 
 def get_funcname():
     func = inspect.stack()[1][3]
@@ -50,17 +59,15 @@ def logwrap(logfile):
 
 class mylogger():
     def __init__(self,logfile,logfilelevel,funcname):
-        logging.basicConfig(level=logfilelevel,filename=logfile,filemode='w',
-                            datefmt='%m-%d %H:%M:%S',
-                            format='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
+        logging.basicConfig(level=logfilelevel)
+        fh = logging.FileHandler(logfile,'w',encoding='utf-8')
+        formatter = logging.Formatter(datefmt='%m-%d %H:%M:%S',
+            fmt='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
+        fh.setFormatter(formatter)
+        # fh.setLevel(logfilelevel)
         self.logger = logging.getLogger(funcname)
-        coloredlogs.DEFAULT_LEVEL_STYLES= {
-                                        #'debug': {'color': 'magenta','bold': True},
-                                        'info': {'color': 'green','bold': True},
-                                        'warning': {'color': 'yellow','bold': True},
-                                        'error': {'color': 'red','bold': True},
-                                        'critical': {'color': 'magenta','bold': True}
-                                            }
+        self.logger.addHandler(fh) 
+        coloredlogs.DEFAULT_LEVEL_STYLES = levelmap 
         coloredlogs.DEFAULT_LOG_FORMAT = '%(message)s'
         coloredlogs.install(level='info',logger=self.logger)  
     def debug(self,msg):
@@ -79,13 +86,14 @@ class mylogger():
 class myconlog():
     def __init__(self):
         self.logger = logging.getLogger()
-        coloredlogs.DEFAULT_LEVEL_STYLES= {
-                                        #'debug': {'color': 'magenta','bold': True},
-                                        'info': {'color': 'green','bold': True},
-                                        'warning': {'color': 'yellow','bold': True},
-                                        'error': {'color': 'red','bold': True},
-                                        'critical': {'color': 'magenta','bold': True}
-                                            }
+        # coloredlogs.DEFAULT_LEVEL_STYLES= {
+        #                                 #'debug': {'color': 'magenta','bold': True},
+        #                                 'info': {'color': 'green','bold': True},
+        #                                 'warning': {'color': 'yellow','bold': True},
+        #                                 'error': {'color': 'red','bold': True},
+        #                                 'critical': {'color': 'magenta','bold': True}
+        #                                     }
+        coloredlogs.DEFAULT_LEVEL_STYLES = levelmap 
         coloredlogs.DEFAULT_LOG_FORMAT = '%(message)s'
         coloredlogs.install(level='info')  
     def debug(self,msg):
@@ -103,21 +111,29 @@ class myconlog():
 
 
 if __name__=='__main__': #Usage
-    # funcname = __name__
-    # logfilelevel = 10 # Debug
-    # logfile = 'E:\\app.log'
-    # l = mylogger(logfile,logfilelevel,funcname)   
-    import sys
-    
+    import sys,os
+    logfile = 'app.log'
     if sys.platform == 'win32':
-        logfile = 'E:\\app.log'
+        path = 'E:'
     else:
-        logfile = 'app.log'
-    l = myconlog()   
+        path = '\var\log'
+    logfile = os.path.join(path,logfile) 
+    logfilelevel = 10 # Debug
 
-    l.debug('This is Debug')
-    l.info('ール・デ')
-    l.error('error log')
-    l.warning('warning log')
-    l.critical("this is a critical message")
-    l.verbose('vvvvv')
+    # test mylogger
+    ml = mylogger(logfile,logfilelevel,get_funcname())   
+    ml.debug('This is Debug')
+    ml.info('ール・デ')
+    ml.error('error log')
+    ml.warning('warning log')
+    ml.critical("this is a critical message")
+    ml.verbose('vvvvv')
+
+    # test myconlog
+    ml = myconlog() 
+    ml.debug('This is Debug')
+    ml.info('ール・デ')
+    ml.error('error log')
+    ml.warning('warning log')
+    ml.critical("this is a critical message")
+    ml.verbose('vvvvv')
