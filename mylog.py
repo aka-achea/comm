@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# Version: 20190323
+# Version: 20190324
 
 # CRITICAL    50
 # ERROR   40
@@ -27,6 +27,12 @@ import coloredlogs
 import functools
 import inspect
 import unicodedata
+import sys
+
+
+
+
+
 
 levelmap = {
             #'debug': {'color': 'magenta','bold': True},
@@ -37,8 +43,10 @@ levelmap = {
             }
 
 def get_funcname():
+    sp = '\\' if sys.platform == 'win32' else '/'
     func = inspect.stack()[1][3]
-    mo = str(inspect.stack()[1][1]).split('/')[-1].split('.')[0]
+    mo = str(inspect.stack()[1][1]).split(sp)[-1].split('.')[0]
+    # print(mo)
     mf = mo+'.'+func
     lineno = inspect.stack()[1][2]
     return mf
@@ -58,13 +66,15 @@ def logwrap(logfile):
     return decorator
 
 class mylogger():
-    def __init__(self,logfile,logfilelevel,funcname):
+    def __init__(self,logfile,funcname,logfilelevel=10):
+        # logging.basicConfig(level=logfilelevel,filename=logfile,datefmt='%m-%d %H:%M:%S',
+        #     format='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
         logging.basicConfig(level=logfilelevel)
-        fh = logging.FileHandler(logfile,'w',encoding='utf-8')
+        fh = logging.FileHandler(logfile,'a',encoding='utf-8')
         formatter = logging.Formatter(datefmt='%m-%d %H:%M:%S',
             fmt='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
         fh.setFormatter(formatter)
-        # fh.setLevel(logfilelevel)
+        fh.setLevel(logfilelevel)
         self.logger = logging.getLogger(funcname)
         self.logger.addHandler(fh) 
         coloredlogs.DEFAULT_LEVEL_STYLES = levelmap 
@@ -116,12 +126,12 @@ if __name__=='__main__': #Usage
     if sys.platform == 'win32':
         path = 'E:'
     else:
-        path = '\var\log'
+        path = '/var/log'
     logfile = os.path.join(path,logfile) 
-    logfilelevel = 10 # Debug
+    # logfilelevel = 10 # Debug
 
     # test mylogger
-    ml = mylogger(logfile,logfilelevel,get_funcname())   
+    ml = mylogger(logfile,get_funcname())   
     ml.debug('This is Debug')
     ml.info('ール・デ')
     ml.error('error log')

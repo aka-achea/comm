@@ -1,17 +1,18 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# version: 20190302
+# version: 20190324
 
-import shutil,os
+import shutil
+import os
 
-def g_dsize(dir):
+def g_dsize(dir): #get dir size
     size = 0
     for root, dirs, files in os.walk(dir):
         size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
     return size
 
-def d_move(src,parent): #move folder , folder itself don't exist
+def d_move(src,parent): #move folder 
     # dst = os.path.join(parent,src.split('\\')[-1])
     dst = os.path.join(parent,os.path.split(src)[1])
     if os.path.exists(dst):
@@ -22,13 +23,13 @@ def d_move(src,parent): #move folder , folder itself don't exist
         if ds < ss:
             shutil.rmtree(dst)
             shutil.move(src,parent) 
-            result = 'Replace small one'
+            result = f'Replace small one {dst}'
         else:
             shutil.rmtree(src)
-            result = "Already have big one"
+            result = f"Already have big one {dst}"
     else:
         shutil.move(src,parent)
-        result = 'Move folder'
+        result = f'Move folder to {dst}'
     return result
 
 def f_move(src,dst):
@@ -39,17 +40,24 @@ def f_move(src,dst):
         if os.path.getsize(dst) < os.path.getsize(src):
             os.remove(dst)
             shutil.move(src,dst)
-            result = 'Replace small one'
+            result = f'Replace small one {dst}'
         else:
             os.remove(src)
-            result = "Already have big one"
+            result = f"Already have big one {dst}"
     else:
         shutil.move(src,dst)
-        result = 'Move file'
+        result = f'Move file to {dst}'
     return result
+
+def re_file(p,old,new):    
+    for f in os.listdir(p):
+        fp = os.path.join(p,f)
+        if os.path.isfile(fp):
+        # print(os.path.join(p,f[:-4]+'c.jpg'))
+            nf = f.replace(old,new)
+            os.rename(fp,os.path.join(p,nf))
 
 
 if __name__ == "__main__":
-    src = r'M:\迅雷下载'
-    parent = r'M:\webproject'    
-    d_move(src,parent)
+    p = r'L:\Music\_5s'
+    re_file(p,'JPEG','jpg')    

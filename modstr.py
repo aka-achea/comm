@@ -13,13 +13,9 @@ else:
     logfile = 'app.log'
 
 
-
-logfilelevel = 10 # Debug
-
-
 def modificate(text):
     funcname = 'modstr.modificate'    
-    l = ml.mylogger(logfile,logfilelevel,funcname)     
+    l = ml.mylogger(logfile,funcname)     
     #file_name = re.sub(r'\s*:\s*', u' - ', file_name)    # for FAT file system
     text = str(text)    
     before = text
