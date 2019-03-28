@@ -80,7 +80,9 @@ class mylogger():
         # self.logger.propagate = False
         coloredlogs.DEFAULT_LEVEL_STYLES = levelmap 
         coloredlogs.DEFAULT_LOG_FORMAT = '%(message)s'
-        coloredlogs.install(level='info',logger=self.logger)  
+        coloredlogs.install(level='info')  
+        # coloredlogs.install(level='info',logger=self.logger)  
+
     def debug(self,msg):
         self.logger.debug(msg)
     def info(self,msg):
