@@ -69,7 +69,7 @@ class mylogger():
     def __init__(self,logfile,funcname,logfilelevel=10):
         # logging.basicConfig(level=logfilelevel,filename=logfile,datefmt='%m-%d %H:%M:%S',
         #     format='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
-        logging.basicConfig(level=logfilelevel)
+        # logging.basicConfig(level=logfilelevel)
         fh = logging.FileHandler(logfile,'a',encoding='utf-8')
         formatter = logging.Formatter(datefmt='%m-%d %H:%M:%S',
             fmt='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
@@ -77,6 +77,7 @@ class mylogger():
         fh.setLevel(logfilelevel)
         self.logger = logging.getLogger(funcname)
         self.logger.addHandler(fh) 
+        # self.logger.propagate = False
         coloredlogs.DEFAULT_LEVEL_STYLES = levelmap 
         coloredlogs.DEFAULT_LOG_FORMAT = '%(message)s'
         coloredlogs.install(level='info',logger=self.logger)  

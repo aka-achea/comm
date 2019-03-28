@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
-# Version: 20190302
+# Version: 20190328
+# tested in win
 
 import random,time,requests,sys
 from urllib.request import urlopen,Request,HTTPError
@@ -36,6 +37,7 @@ def op_simple(URL): # use built-in
         html = urlopen(req)
         sys.stdout.write('Wait'+'\r')
         time.sleep(random.uniform(2,4))
+        sys.stdout.write('    '+'\r')
         #l.verbose(html.info())
         #l.debug(html.getcode())
         status = html.getcode()
@@ -60,6 +62,10 @@ def op_requests(url,para='',verify=False):  # use requets
         html = requests.get(url=url,params=para,headers=headers,verify=verify,timeout=60)
     except requests.exceptions.ReadTimeout as e:
         return e
+    except requests.exceptions.ConnectionError as e:
+        print(e)
+        return e
+        # html.content
     return html
 
 
