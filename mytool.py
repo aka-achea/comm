@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# version 20190313
+# version 20190406
 
 import time,sys
 
@@ -29,5 +29,25 @@ def mywait(n):
         sys.stdout.write('Wait'+' '*space+str(n-i)+'\r')
         time.sleep(1)
 
+def remove_emptyline(text):
+    a = text.split('\n')
+    text = []
+    for t in a:
+        if t != '':
+            text.append(t)
+    text = '\n'.join(text)
+    return text
+
+def remove_emptyline_file(f):
+    r_file = open(f, "r")
+    lines = r_file.readlines()
+    r_file.close()
+    for idx, line in enumerate(lines):
+        if line.split():
+            print(idx, line)
+        r_file.close()
+
+
 if __name__ == "__main__":
-    pass
+    f = r'M:\GH\a.txt'
+    remove_emptyline_file(f)
