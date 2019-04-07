@@ -33,8 +33,9 @@ def remove_emptyline(text):
     a = text.split('\n')
     text = []
     for t in a:
-        if t != '':
+        if t != '' and t != ' ':
             text.append(t)
+    # print(text)
     text = '\n'.join(text)
     return text
 
