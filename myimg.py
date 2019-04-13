@@ -25,6 +25,9 @@ def gifmake(folder,gifname):
     gifpath = os.path.join(folder,gifname)
     imageio.mimsave(gifpath, frames, 'GIF', duration = 0.1)
 
+
+
+
 if __name__ == "__main__":
     pic = r'M:\MyProject\ocr\t.gif'
     outfolder = r'M:\MyProject\ocr'
