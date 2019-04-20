@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# version: 20190302
+# version: 20190420
 
 import sys
-import mylog as ml
+
+from mylog import mylogger,get_funcname
 
 
 if sys.platform == 'win32':
@@ -14,8 +15,7 @@ else:
 
 
 def modificate(text):
-    funcname = 'modstr.modificate'    
-    l = ml.mylogger(logfile,funcname)     
+    ml = mylogger(logfile,get_funcname)     
     #file_name = re.sub(r'\s*:\s*', u' - ', file_name)    # for FAT file system
     text = str(text)    
     before = text
@@ -34,8 +34,8 @@ def modificate(text):
     #file_name = file_name.replace('$', '\\$')    # for command, see issue #7
     after = text
     if before != after :
-        l.debug("Before modify: "+before)
-        l.debug("After modify: "+after)
+        ml.debug("Before modify: "+before)
+        ml.debug("After modify: "+after)
     return text
 
 if __name__=='__main__':

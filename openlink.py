@@ -63,17 +63,6 @@ def ran_header():
 
 
 def op_simple(URL,headers): # use built-in
-    # headers = {
-    #     "Accept":"text/html,application/xhtml+xml,application/xml; " \
-    #         "q=0.9,image/webp,*/*;q=0.8",
-    #     "Accept-Encoding":"text/html",
-    #     "Accept-Language":"en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,zh-TW;q=0.2",
-    #     "Content-Type":"application/x-www-form-urlencoded",
-    #     # "User-Agent":"Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 "\
-    #     #     "(KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36",
-    #     "User-Agent":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
-    #     #"Referer":"www.xiami.com"
-    #     }
     req = Request(URL,headers=headers)
     try:
         html = urlopen(req)
@@ -99,9 +88,9 @@ def op_simple(URL,headers): # use built-in
 def op_sel(URL):     # use selenium
     pass
 
-def op_requests(url,para='',verify=False):  # use requets
+def op_requests(url,hearder,para='',verify=False):  # use requets
     try:
-        html = requests.get(url=url,params=para,headers=headers,verify=verify,timeout=60)
+        html = requests.get(url=url,params=para,headers=hearder,verify=verify,timeout=60)
     except requests.exceptions.ReadTimeout as e:
         return e
     except requests.exceptions.ConnectionError as e:
