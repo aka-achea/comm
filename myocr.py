@@ -12,6 +12,8 @@ import numpy as np
 
 from mytool import remove_emptyline 
 
+# bug: doesn't support Chinese Charactor in file path
+
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 threshold = 120
