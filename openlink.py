@@ -62,8 +62,8 @@ def ran_header():
 # time.sleep(2 + float(random.randint(1, 100)) / 20)
 
 
-def op_simple(URL,headers): # use built-in
-    req = Request(URL,headers=headers)
+def op_simple(URL,header): # use built-in
+    req = Request(URL,headers=header)
     try:
         html = urlopen(req)
         sys.stdout.write('Wait'+'\r')
@@ -88,9 +88,9 @@ def op_simple(URL,headers): # use built-in
 def op_sel(URL):     # use selenium
     pass
 
-def op_requests(url,hearder,para='',verify=False):  # use requets
+def op_requests(url,header,para='',verify=False):  # use requets
     try:
-        html = requests.get(url=url,params=para,headers=hearder,verify=verify,timeout=60)
+        html = requests.get(url=url,params=para,headers=header,verify=verify,timeout=60)
     except requests.exceptions.ReadTimeout as e:
         return e
     except requests.exceptions.ConnectionError as e:
@@ -104,6 +104,6 @@ def op_requests(url,hearder,para='',verify=False):  # use requets
 if __name__=='__main__':
 
     url = 'http://www.xiami.com/widget/xml-single/sid/1769402049'
-    html = op_simple(url)
+    html = op_simple(url,header=ran_header())
     print(html[1])
     print(html[0])
