@@ -5,7 +5,7 @@
 
 # bug 404 forbidden
 
-import sys , os , shutil ,datetime , math
+import sys , os , shutil ,datetime , math, requests
 from urllib.parse import urlparse
 from urllib import error
 import urllib.request as req
@@ -106,6 +106,13 @@ def dl(url,out=None,pbar=pbar):
         # ftype = '.'+str(headers['Content-Type']).split('/')[1]
         shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
  
+def simpledl(file_url, file_name):
+    # open in binary mode
+    with open(file_name, "wb") as file:
+        # get request
+        response = requests.get(file_url,verify=False)
+        # write to file
+        file.write(response.content)
 
 
 if __name__ == "__main__":
