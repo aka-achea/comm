@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# Version: 20190324
+# Version: 20190505
 
 # CRITICAL    50
 # ERROR   40
@@ -121,6 +121,38 @@ class myconlog():
         self.logger.critical(msg)
     def verbose(self,msg):
         self.logger.debug(msg)
+
+
+class myfilelog():
+    def __init__(self,logfile,funcname,logfilelevel=10):
+        # logging.basicConfig(level=logfilelevel,filename=logfile,datefmt='%m-%d %H:%M:%S',
+        #     format='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
+        # logging.basicConfig(level=logfilelevel)
+        self.fh = logging.FileHandler(logfile,'a',encoding='utf-8')
+        formatter = logging.Formatter(datefmt='%m-%d %H:%M:%S',
+            fmt='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
+        self.fh.setFormatter(formatter)
+        self.fh.setLevel(logfilelevel)
+        self.logger = logging.getLogger(funcname)
+        self.logger.addHandler(self.fh) 
+        # self.logger.propagate = False
+
+    def debug(self,msg):
+        self.logger.debug(msg)
+    def info(self,msg):
+        self.logger.info(msg)
+    def warning(self,msg):
+        self.logger.warning(msg)
+    def error(self,msg):
+        self.logger.error(msg)
+    def critical(self,msg):
+        self.logger.critical(msg)
+    def verbose(self,msg):
+        self.logger.debug(msg)
+
+    def close(self):
+        self.logger.removeHandler(self.fh)
+        
 
 
 if __name__=='__main__': #Usage
