@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# Version: 20190505
+# Version: 20190506
 
 # CRITICAL    50
 # ERROR   40
@@ -125,8 +125,6 @@ class myconlog():
 
 class myfilelog():
     def __init__(self,logfile,funcname,logfilelevel=10):
-        # logging.basicConfig(level=logfilelevel,filename=logfile,datefmt='%m-%d %H:%M:%S',
-        #     format='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
         # logging.basicConfig(level=logfilelevel)
         self.fh = logging.FileHandler(logfile,'a',encoding='utf-8')
         formatter = logging.Formatter(datefmt='%m-%d %H:%M:%S',
@@ -135,7 +133,7 @@ class myfilelog():
         self.fh.setLevel(logfilelevel)
         self.logger = logging.getLogger(funcname)
         self.logger.addHandler(self.fh) 
-        # self.logger.propagate = False
+        self.logger.propagate = False  # disable log to parent handler
 
     def debug(self,msg):
         self.logger.debug(msg)
@@ -150,8 +148,8 @@ class myfilelog():
     def verbose(self,msg):
         self.logger.debug(msg)
 
-    def close(self):
-        self.logger.removeHandler(self.fh)
+    # def close(self):
+    #     self.logger.removeHandler(self.fh)
         
 
 
@@ -166,16 +164,26 @@ if __name__=='__main__': #Usage
     # logfilelevel = 10 # Debug
 
     # test mylogger
-    ml = mylogger(logfile,get_funcname())   
-    ml.debug('This is Debug')
-    ml.info('ール・デ')
-    ml.error('error log')
-    ml.warning('warning log')
-    ml.critical("this is a critical message")
-    ml.verbose('vvvvv')
+    # ml = mylogger(logfile,get_funcname())   
+    # ml.debug('This is Debug')
+    # ml.info('ール・デ')
+    # ml.error('error log')
+    # ml.warning('warning log')
+    # ml.critical("this is a critical message")
+    # ml.verbose('vvvvv')
+
+    # # test myconlog
+    # ml = myconlog() 
+    # ml.debug('This is Debug')
+    # ml.info('ール・デ')
+    # ml.error('error log')
+    # ml.warning('warning log')
+    # ml.critical("this is a critical message")
+    # ml.verbose('vvvvv')
+
 
     # test myconlog
-    ml = myconlog() 
+    ml = myfilelog(logfile,get_funcname()) 
     ml.debug('This is Debug')
     ml.info('ール・デ')
     ml.error('error log')
