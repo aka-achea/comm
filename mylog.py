@@ -124,14 +124,14 @@ class myconlog():
 
 
 class myfilelog():
-    def __init__(self,logfile,funcname,logfilelevel=10):
+    def __init__(self,logfile,logfilelevel=10):
         # logging.basicConfig(level=logfilelevel)
         self.fh = logging.FileHandler(logfile,'a',encoding='utf-8')
         formatter = logging.Formatter(datefmt='%m-%d %H:%M:%S',
-            fmt='%(asctime)s <%(name)s>[%(levelname)s] %(message)s')
+            fmt='%(asctime)s <%(module)s-%(funcName)s-%(lineno)d>[%(levelname)s] %(message)s')
         self.fh.setFormatter(formatter)
         self.fh.setLevel(logfilelevel)
-        self.logger = logging.getLogger(funcname)
+        self.logger = logging.getLogger(__name__)
         self.logger.addHandler(self.fh) 
         self.logger.propagate = False  # disable log to parent handler
 
@@ -183,7 +183,7 @@ if __name__=='__main__': #Usage
 
 
     # test myconlog
-    ml = myfilelog(logfile,get_funcname()) 
+    ml = myfilelog(logfile) 
     ml.debug('This is Debug')
     ml.info('ール・デ')
     ml.error('error log')
