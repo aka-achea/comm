@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# Version: 20190306
+# Version: 20190519
 
 # bug 404 forbidden
 
@@ -106,11 +106,15 @@ def dl(url,out=None,pbar=pbar):
         # ftype = '.'+str(headers['Content-Type']).split('/')[1]
         shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
  
-def simpledl(file_url, file_name):
+def simpledl(file_url, file_name=''):
     # open in binary mode
+    if file_name == '':
+        file_name = file_url.split('/')[-1]
     with open(file_name, "wb") as file:
         # get request
-        response = requests.get(file_url,verify=False)
+        # response = requests.get(file_url,verify=False)
+        response = requests.get(file_url)
+
         # write to file
         file.write(response.content)
 
@@ -120,8 +124,8 @@ if __name__ == "__main__":
     # url = 'https://github.com/hfaran/progressive/blob/master/example.gif'
     # url = 'http://m128.xiami.net/761/96761/2102654949/1795287087_1479699396518.mp3?auth_key=1546570800-0-0-c5bc8bc5db6fb85dde5e6171bd821a81'
     url = 'https://epass.icbc.com.cn/ICBCChromeExtension.msi'
-
-    out = 'tesget.mp3'
+    url = 'https://www.sximg.com/u/20190517/04141852.jpg'
+    out = 'tesget.jpg'
     # out = None
-    dl(url)
+    simpledl(url)
     # print(get_console_width())
