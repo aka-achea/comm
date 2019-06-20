@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# version: 20190324
+# version: 20190618
 
 import shutil
 import os
@@ -32,9 +32,9 @@ def d_move(src,parent): #move folder
         result = f'Move folder to {dst}'
     return result
 
+
 def f_move(src,dst):
     if os.path.exists(dst) and src != dst:
-        # # print(dst)
         # print('DST: '+str(os.path.getsize(dst)))
         # print('SRC: '+str(os.path.getsize(src)))
         if os.path.getsize(dst) < os.path.getsize(src):
@@ -49,7 +49,8 @@ def f_move(src,dst):
         result = f'Move file to {dst}'
     return result
 
-def re_file(p,old,new):    
+
+def batch_rename(p,old,new):    
     for f in os.listdir(p):
         fp = os.path.join(p,f)
         if os.path.isfile(fp):
@@ -58,6 +59,21 @@ def re_file(p,old,new):
             os.rename(fp,os.path.join(p,nf))
 
 
+def ucase(path):
+    for f in os.listdir(path):
+        nfile = f.upper()
+        if nfile != f :        
+            src = os.path.join(path,f)        
+            dst = os.path.join(path,nfile)        
+            shutil.move(src,dst)
+
+
+def comparedir(question,target):
+    return set(os.listdir(question))&set(os.listdir(target))     
+        
+
 if __name__ == "__main__":
-    p = r'L:\Music\_5s'
-    re_file(p,'JPEG','jpg')    
+    p = r'J:\新建文件夹 (2)'
+    # re_file(p,'JPEG','jpg')    
+    ucase(p)
+    
