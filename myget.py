@@ -106,15 +106,14 @@ def dl(url,out=None,pbar=pbar):
         # ftype = '.'+str(headers['Content-Type']).split('/')[1]
         shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
  
-def simpledl(file_url, file_name=''):
+def simpledl(file_url, file_name='',verify=True):
     # open in binary mode
     if file_name == '':
         file_name = file_url.split('/')[-1]
     with open(file_name, "wb") as file:
         # get request
         # response = requests.get(file_url,verify=False)
-        response = requests.get(file_url)
-
+        response = requests.get(file_url,verify=verify)
         # write to file
         file.write(response.content)
 
