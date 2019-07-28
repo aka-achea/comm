@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# Version: 20190519
+# Version: 20190720
 
 # bug 404 forbidden
 
@@ -110,12 +110,19 @@ def simpledl(file_url, file_name='',verify=True):
     # open in binary mode
     if file_name == '':
         file_name = file_url.split('/')[-1]
+    try:
+        response = requests.get(file_url,verify=verify)             # get request
+    except requests.exceptions.ConnectionError as e:
+        print(e)
+        mywait(2)
+        try:
+            response = requests.get(file_url,verify=verify)             # get request
+        except:
+            print('Failed !!')
+            return 'ConnectionError'
     with open(file_name, "wb") as file:
-        # get request
-        # response = requests.get(file_url,verify=False)
-        response = requests.get(file_url,verify=verify)
-        # write to file
-        file.write(response.content)
+        file.write(response.content)             # write to file
+
 
 
 if __name__ == "__main__":
