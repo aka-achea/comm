@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# version 20190406
+#version 20190406
 
 import time,sys
 

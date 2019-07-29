@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
-# Version: 20190328
-# tested in win
+#Version: 20190729
+#tested in win
 
 import random,time,requests,sys
 from urllib.request import urlopen,Request,HTTPError
@@ -11,7 +11,10 @@ from urllib.error import URLError
 from mytool import mywait
 
 
-def ran_header():
+def ran_header(ref=''):
+    '''Generate random HTTP header
+    ref='http://music.163.com/'
+    '''
     user_agents=[
         "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)",
         "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Acoo Browser; SLCC1; .NET CLR 2.0.50727; Media Center PC 5.0; .NET CLR 3.0.04506)",
@@ -55,6 +58,7 @@ def ran_header():
         "Accept-Language":"en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,zh-TW;q=0.2",
         "Content-Type":"application/x-www-form-urlencoded",
         "User-Agent":random.choice(user_agents),
+        'Referer': ref,
         }
     return headers
 
@@ -62,35 +66,31 @@ def ran_header():
 # time.sleep(2 + float(random.randint(1, 100)) / 20)
 
 
-def op_simple(URL,header): # use built-in
+def op_simple(URL,header)->list:# 
+    '''use built-in urllib'''
     req = Request(URL,headers=header)
     try:
         html = urlopen(req)
         sys.stdout.write('Wait'+'\r')
         time.sleep(random.uniform(2,4))
         sys.stdout.write('    '+'\r')
-        #l.verbose(html.info())
-        #l.debug(html.getcode())
         status = html.getcode()
-    except HTTPError as e:
-        status = e #5xx,4xx
-        html = 0
+    except HTTPError as e: #5xx,4xx
+        return 0,e
     except URLError as e:
         print('Host no response, try again')
         mywait(30)
         try:
             html = urlopen(req)
         except:
-            status = e 
-            html = 0
-    return html,status #return array object
+            return 0,e
+    return html,status 
 
-def op_sel(URL):     # use selenium
-    pass
 
-def op_requests(url,header,para='',verify=False):  # use requets
+def op_requests(url,header,para='',verify=True,timeout=60):  
+    '''use requets module'''
     try:
-        html = requests.get(url=url,params=para,headers=header,verify=verify,timeout=60)
+        html = requests.get(url=url,headers=header,params=para,verify=verify,timeout=60)
     except requests.exceptions.ReadTimeout as e:
         return e
     except requests.exceptions.ConnectionError as e:
@@ -100,10 +100,22 @@ def op_requests(url,header,para='',verify=False):  # use requets
     return html
 
 
+def op_sel(URL):     
+    '''use selenium'''
+    pass
+
+
+
+
+
 
 if __name__=='__main__':
 
-    url = 'http://www.xiami.com/widget/xml-single/sid/1769402049'
-    html = op_simple(url,header=ran_header())
-    print(html[1])
-    print(html[0])
+    # url = 'http://www.xiami.com/widget/xml-single/sid/1769402049'
+    # url = 'https://emumo.xiami.com/widget/xml-single/sid/1769402049'
+    url = 'https://music.163.com/#/album?id=79753582'
+    # html = op_simple(url,header=ran_header())
+    # print(html[1])
+    # print(html[0])
+    html = op_requests(url,ran_header())
+    print(html.content)
