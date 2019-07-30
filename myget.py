@@ -1,9 +1,13 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# Version: 20190720
+# Version: 2019030
 
 # bug 404 forbidden
+
+'''
+Module for common web crawling operaton
+'''
 
 import sys , os , shutil ,datetime , math, requests
 from urllib.parse import urlparse
@@ -13,7 +17,9 @@ import urllib.request as req
 # customized module
 from mytool import mywait
 
+
 def get_console_width():
+    '''Get width of console'''
     #Code from http://bitbucket.org/techtonik/python-pager
     if os.name == 'nt':
         STD_INPUT_HANDLE  = -10
@@ -43,13 +49,17 @@ def get_console_width():
         return sbi.srWindow.Right+1
     return 80
 
+
 def filename_from_url(url):
+    '''Get file name from url'''
     fname = os.path.basename(urlparse(url).path)
     if len(fname.strip(" \n\t.")) == 0:
         return None
     return fname
 
+
 def pbar(blocks, block_size, total_size):
+    '''Progress bar for file downloading'''
     if not total_size or total_size < 0:
         sys.stdout.write(str(block_size*blocks)+'\r')
     else:
@@ -79,8 +89,11 @@ def pbar(blocks, block_size, total_size):
         sys.stdout.write(bar+' '+percentrate+' '+ds+'/'+ts+unit+e)
     sys.stdout.flush()
 
-def dl(url,out=None,pbar=pbar):    
-    # use pbar = None to supress process bar
+
+def dl(url,out=None,pbar=pbar):
+    '''Download file with progress bar    
+    use pbar = None to supress process bar
+    '''
     # detect of out is a directory
     outdir = None
     if out and os.path.isdir(out):
