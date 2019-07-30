@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-#version: 20190729
+#version: 20190730
+
+'''
+Module for processing string
+'''
 
 import sys
 
@@ -38,6 +42,26 @@ def fnamechecker(text)->str:
     if before != after :
         ml.debug(f'{before} --> {after}')
     return text
+
+
+def remove_emptyline(text):
+    '''Remove empty line from paragraph''' 
+    ntext = []
+    for t in text.split('\n'):
+        if t != '' and t != ' ':
+            ntext.append(t)
+    # print(text)
+    return '\n'.join(ntext)
+
+
+def remove_emptyline_file(f)->str:
+    '''???Remove emptyline in file'''
+    r_file = open(f, "r")
+    lines = r_file.readlines()
+    r_file.close()
+    for idx, line in enumerate(lines):
+        if line.split():
+            print(idx, line)
 
 
 

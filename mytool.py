@@ -3,6 +3,12 @@
 #tested in win
 #version 20190406
 
+
+'''
+Module for misc tool
+'''
+
+
 import time,sys
 
 
