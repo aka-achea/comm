@@ -13,7 +13,7 @@ from mytool import mywait
 
 def ran_header(ref=''):
     '''Generate random HTTP header
-    ref='http://music.163.com/'
+    example: ref='http://music.163.com/'
     '''
     user_agents=[
         "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)",

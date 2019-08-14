@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-#version: 20190730
+#version: 20190804
 
 '''
 Module for processing string
@@ -19,29 +19,43 @@ else:
 
 
 
-def batchremovestr(tlist,text):
+def batchremovestr(tlist:list,text):
     '''Remove words in tlist from text'''
     for t in tlist:
         text = text.replace(t,'')
     return text.strip()
 
 
-def fnamechecker(text)->str:
-    '''Replace reserved charactor in Windows path with other UTF8 charactor'''
-    ml = mylogger(logfile,get_funcname()) 
-    #file_name = re.sub(r'\s*:\s*', u' - ', file_name)    # for FAT file system
-    before = text
-    tlist = [('?', u'？'),('/', u'／'),('|', ''),(':', u'∶'),('*', u'×'),
-                ('\n', ''),('\\', u'＼'),('"', u'＂')]
-    #text = text.replace('\'', u'＇')
+def batchreplacestr(tlist:list,text):
+    '''Replace words in text against tuple list'''
     for t,n in tlist:
         text = text.replace(t,n)
-    text = text.strip()
-    #file_name = file_name.replace('$', '\\$')    # for command, see issue #7
-    after = text
-    if before != after :
-        ml.debug(f'{before} --> {after}')
-    return text
+    return text.strip()    
+
+
+def fnamechecker(text)->str:
+    '''Replace reserved charactor in Windows path with other UTF8 charactor'''
+    tlist = [('?', u'？'),('/', u'／'),('|', ''),(':', u'∶'),('*', u'×'),
+                ('\n', ''),('\\', u'＼'),('"', u'＂')]    
+    return batchreplacestr(tlist,text)
+
+
+# def fnamechecker(text)->str:
+#     '''Replace reserved charactor in Windows path with other UTF8 charactor'''
+#     ml = mylogger(logfile,get_funcname()) 
+#     #file_name = re.sub(r'\s*:\s*', u' - ', file_name)    # for FAT file system
+#     before = text
+#     tlist = [('?', u'？'),('/', u'／'),('|', ''),(':', u'∶'),('*', u'×'),
+#                 ('\n', ''),('\\', u'＼'),('"', u'＂')]
+#     #text = text.replace('\'', u'＇')
+#     for t,n in tlist:
+#         text = text.replace(t,n)
+#     text = text.strip()
+#     #file_name = file_name.replace('$', '\\$')    # for command, see issue #7
+#     after = text
+#     if before != after :
+#         ml.debug(f'{before} --> {after}')
+#     return text
 
 
 def remove_emptyline(text):
@@ -64,10 +78,24 @@ def remove_emptyline_file(f)->str:
             print(idx, line)
 
 
+def remove_dupline(file):
+    '''Remove duplicate line in the file (UTF8)'''
+    pass
+#     with open(file,'r',encoding='utf-8') as f:
+#         lines = f.readlines()
+#         newlines = { for l in lines}
+
+
+def splitall(seplist,text):
+    for sep in seplist:
+        text = text.replace(sep,',')
+    return [x for x in text.split(',') if x]
+
 
 if __name__=='__main__':
-    text1 = 'ル・デ'
-    fnamechecker(text1)
-    print(text1)
-   
+    # text1 = 'ル・デ'
+    text = 'emove duplicate line in the file (UTF'
+    seplist = [' ','pl','i']
+    r = splitall(seplist, text)
+    print(r)
    

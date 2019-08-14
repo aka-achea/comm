@@ -9,7 +9,7 @@ Module for file common operation
 
 import shutil
 import os
-
+import fnmatch
 
 
 def g_dsize(folderpath): 
@@ -81,7 +81,24 @@ def ucase(folderpath):
 def comparedir(question,baseline):
     '''Compare file in question folder and baseline folder'''
     return set(os.listdir(question))&set(os.listdir(baseline))     
-        
+
+
+def clean_f(path,suffix):
+    '''Clean File with specified suffix'''
+    for f in os.listdir(path):
+        if fnmatch.fnmatch(f,'*.'+suffix):
+            os.remove(f)
+
+
+def count_f(path,suffix):
+    '''Count file with specified suffix'''
+    c = 0
+    for f in os.listdir(path):        
+        if fnmatch.fnmatch(f,'*.'+suffix): 
+            c += 1
+    return c
+                
+
 
 if __name__ == "__main__":
     p = r'E:\AWS training 2019'

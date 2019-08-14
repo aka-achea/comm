@@ -1,24 +1,26 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
+#version 20190730
 
-from matplotlib import pyplot as plt
 from PIL import Image
 import pytesseract
 import os,sys
 import cv2
-import difflib
-import numpy as np
+# from matplotlib import pyplot as plt
+# import difflib
+# import numpy as np
 
-from mytool import remove_emptyline 
+from mystr import remove_emptyline 
 
 # bug: doesn't support Chinese Charactor in file path
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-
 threshold = 120
 
+
 def initTable(threshold=150):
+    '''Build threshold table'''
     table = []
     for i in range(256): 
         if i < threshold:
@@ -27,18 +29,20 @@ def initTable(threshold=150):
             table.append(1)
     return table
 
-def readimg_pil(pic,threshold):
-    # print(img)
+
+def readimg_pil(pic,threshold,lang='chi_sim'):
+    '''OCR with pillow'''
     im = Image.open(pic).convert('L')  #灰度图 
     # im.show()
     ni = im.point(initTable(threshold),'1')
     # ni.save(out,'jpeg')
     ni.show()
-    text = pytesseract.image_to_string(ni,lang='chi_sim')
-    # print(t)
+    text = pytesseract.image_to_string(ni,lang)
     return text
 
+
 def myocr_pil(path):
+    '''OCR all file in folder'''
     for j in os.listdir(path):
         imgpath = os.path.join(path,j)
         text = readimg_pil(imgpath,threshold)
@@ -67,17 +71,18 @@ def denoise_cv_fNM(img):
 
 def denoise_cv_gausthrold(img):
     print('高斯二值化')
-    return cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
-                cv2.THRESH_BINARY,7,2)
+    return cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                cv2.THRESH_BINARY,7,2)
 
 def cv2plt(img):
     b,g,r = cv2.split(img)
     return cv2.merge([r,g,b])
 
-def myocr_cv(pic,book=False):
-    img = cv2.imread(pic,0)        #灰度图
 
-    if book == True:
+def myocr_cv(pic,book=False,lang='chi_sim'):
+
+    img = cv2.imread(pic,0)        #灰度图
+    if book:
         img = denoise_cv_med(img,5)    #中值消噪    
         img = denoise_cv_gaus(img,5)   #高斯过滤
         img = denoise_cv_bilat(img)    #双边过滤
@@ -93,9 +98,9 @@ def myocr_cv(pic,book=False):
     # cv2.destroyAllWindows()
  
     print('='*10)
-    text = pytesseract.image_to_string(img,lang='chi_sim')
+    text = pytesseract.image_to_string(img,lang=lang)
     text = remove_emptyline(text)
-    print(text)
+    # print(text)
 
     # plt.imshow(img,'gray')
     # plt.xticks([]),plt.yticks([])

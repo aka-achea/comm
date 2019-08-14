@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-#version 20190406
+#version 20190730
 
 
 '''
@@ -10,9 +10,11 @@ Module for misc tool
 
 
 import time,sys
+import pyautogui as auto
 
 
 def mytimer(label='',trace=True):
+    '''Timer decorator'''
     class Timer:
         def __init__(self,func):
             self.func = func
@@ -29,30 +31,56 @@ def mytimer(label='',trace=True):
             return result
     return Timer
 
+
 def mywait(n):
+    '''Wait for n seconds'''
     for i in range(n):
         space = 1 if (60-i) > 9 else 2
         sys.stdout.write('Wait'+' '*space+str(n-i)+'\r')
         time.sleep(1)
 
-def remove_emptyline(text):
-    a = text.split('\n')
-    text = []
-    for t in a:
-        if t != '' and t != ' ':
-            text.append(t)
-    # print(text)
-    text = '\n'.join(text)
-    return text
 
-def remove_emptyline_file(f):
-    r_file = open(f, "r")
-    lines = r_file.readlines()
-    r_file.close()
-    for idx, line in enumerate(lines):
-        if line.split():
-            print(idx, line)
-        r_file.close()
+def combinekey(a,b):
+    '''press two key'''
+    auto.keyDown(a)
+    auto.keyDown(b)
+    auto.keyUp(a)
+    auto.keyUp(b)
+
+
+def capture(img,trys=10,confidence=0.9):    
+    # pic = os.path.join(wp,img+'.png')
+    trytime = 1
+    while trytime < trys:
+        try:
+            button = auto.locateCenterOnScreen(img,grayscale=True,confidence=confidence)
+            time.sleep(1)
+            break            
+        except TypeError:
+            time.sleep(15)
+            trytime += 1
+            print(f'try to locate {img} {str(trytime)}')
+            continue
+        except OSError as e:
+            print(e)
+            return e
+    else:
+        print(f"Max tries reach, not able to locate option {img}")
+        button = None
+        # return f"Max tries reach, not able to locate option {img}"
+        # raise(f'Find no {img}')
+    return button
+
+
+
+def findbutton(img,**args):
+    button = capture(img,**args)
+    if isinstance(button,tuple):
+        auto.click(button)
+        return True
+    else:
+        return False
+
 
 
 if __name__ == "__main__":

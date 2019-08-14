@@ -35,6 +35,11 @@ def gifmake(folder,gifname):
     imageio.mimsave(gifpath, frames, 'GIF', duration = 0.1)
 
 
+def imgresize(pic,pix):
+    '''Resize Image to specified pix'''
+    img = Image.open(pic)   
+    return img.resize((pix,pix),Image.LANCZOS)
+
 
 
 if __name__ == "__main__":
