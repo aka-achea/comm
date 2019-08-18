@@ -43,6 +43,7 @@ Pillow==6.0.0
 prettytable==0.7.2
 PyAutoGUI==0.9.39
 pycryptodomex==3.8.2
+pyfiglet==0.8.post1
 pylint==2.3.1
 PyMsgBox==1.0.6
 pyparsing==2.4.0

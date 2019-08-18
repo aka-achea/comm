@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-#version 20190730
+#version 20190818
 
 
 '''
@@ -11,6 +11,8 @@ Module for misc tool
 
 import time,sys
 import pyautogui as auto
+import win32con
+import win32clipboard as wincld
 
 
 def mytimer(label='',trace=True):
@@ -72,7 +74,6 @@ def capture(img,trys=10,confidence=0.9):
     return button
 
 
-
 def findbutton(img,**args):
     button = capture(img,**args)
     if isinstance(button,tuple):
@@ -80,6 +81,19 @@ def findbutton(img,**args):
         return True
     else:
         return False
+
+
+def get_text_clipboard():
+    '''Get text from clipboard'''
+    wincld.OpenClipboard()
+    try:
+        text_result = wincld.GetClipboardData(win32con.CF_UNICODETEXT)
+    except TypeError:
+        return None
+    wincld.EmptyClipboard()
+    wincld.CloseClipboard()
+    return text_result
+
 
 
 
