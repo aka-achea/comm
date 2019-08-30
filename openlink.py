@@ -100,12 +100,15 @@ def op_requests(url,header,para='',verify=True,timeout=60):
     return html
 
 
-def op_sel(URL):     
-    '''use selenium'''
-    pass
 
 
-
+def saveHtml(file_name,weblink,header):
+    '''Save web page'''
+    content = op_simple(weblink,header)[0]
+    # 注意windows文件命名的禁用符，比如 /
+    with open(file_name.replace('/', '_'), "wb") as f:
+        # 写文件用bytes而不是str，所以要转码
+        f.write(content.read())
 
 
 
@@ -117,5 +120,6 @@ if __name__=='__main__':
     # html = op_simple(url,header=ran_header())
     # print(html[1])
     # print(html[0])
-    html = op_requests(url,ran_header())
-    print(html.content)
+    # html = op_requests(url,ran_header())
+    # print(html.content)
+    saveHtml('a.html',url,ran_header(ref = 'http://music.163.com/'))

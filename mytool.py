@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-#version 20190818
+#version 20190827
 
 
 '''
@@ -50,7 +50,8 @@ def combinekey(a,b):
     auto.keyUp(b)
 
 
-def capture(img,trys=10,confidence=0.9):    
+def capture(img,trys=10,confidence=0.9):  
+    '''Find botton location'''  
     # pic = os.path.join(wp,img+'.png')
     trytime = 1
     while trytime < trys:
@@ -74,7 +75,8 @@ def capture(img,trys=10,confidence=0.9):
     return button
 
 
-def findbutton(img,**args):
+def clickbutton(img,**args):
+    '''click button'''
     button = capture(img,**args)
     if isinstance(button,tuple):
         auto.click(button)
@@ -90,7 +92,7 @@ def get_text_clipboard():
         text_result = wincld.GetClipboardData(win32con.CF_UNICODETEXT)
     except TypeError:
         return None
-    wincld.EmptyClipboard()
+    # wincld.EmptyClipboard()
     wincld.CloseClipboard()
     return text_result
 

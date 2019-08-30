@@ -9,7 +9,8 @@
 Module for common web crawling operaton
 '''
 
-import sys , os , shutil ,datetime , math, requests
+import sys , os , shutil ,datetime , math
+import requests
 from urllib.parse import urlparse
 from urllib import error
 import urllib.request as req

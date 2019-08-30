@@ -94,8 +94,8 @@ def splitall(seplist,text):
 
 if __name__=='__main__':
     # text1 = 'ル・デ'
-    text = 'emove duplicate line in the file (UTF'
-    seplist = [' ','pl','i']
+    text = '发行时间：2019-06-23'
+    seplist = ['：','-']
     r = splitall(seplist, text)
     print(r)
    
