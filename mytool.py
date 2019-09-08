@@ -92,7 +92,7 @@ def get_text_clipboard():
         text_result = wincld.GetClipboardData(win32con.CF_UNICODETEXT)
     except TypeError:
         return None
-    # wincld.EmptyClipboard()
+    wincld.EmptyClipboard()
     wincld.CloseClipboard()
     return text_result
 

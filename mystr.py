@@ -36,7 +36,7 @@ def batchreplacestr(tlist:list,text):
 def fnamechecker(text)->str:
     '''Replace reserved charactor in Windows path with other UTF8 charactor'''
     tlist = [('?', u'？'),('/', u'／'),('|', ''),(':', u'∶'),('*', u'×'),
-                ('\n', ''),('\\', u'＼'),('"', u'＂')]    
+                ('\n', ''),('\\', u'＼'),('"', u'＂'),('\t',' ')]    
     return batchreplacestr(tlist,text)
 
 
