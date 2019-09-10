@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# version: 20190730
+# version: 20190910
 
 '''
 Module for file common operation
@@ -18,6 +18,18 @@ def g_dsize(folderpath):
     for root, dirs, files in os.walk(folderpath):
         size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
     return size
+
+
+def g_fsize(folderpath): 
+    '''get all file size dict'''
+    adict = {}
+    for root, dirs, files in os.walk(folderpath):
+        for name in files:
+            size = os.path.getsize(os.path.join(root, name))
+            if name[-3:].upper() not in ['JPG','SRT','HTM','PEG','ENT']: 
+                print(name,size)
+                adict[name] = size
+    return adict
 
 
 def d_move(src,dstparent):

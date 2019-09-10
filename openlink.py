@@ -90,9 +90,9 @@ def op_simple(URL,header)->list:#
 def op_requests(url,header,para='',verify=True,timeout=60):  
     '''use requets module'''
     try:
-        html = requests.get(url=url,headers=header,params=para,verify=verify,timeout=60)
+        html = requests.get(url=url,headers=header,params=para,verify=verify,timeout=timeout)
     except requests.exceptions.ReadTimeout as e:
-        return e
+        raise
     except requests.exceptions.ConnectionError as e:
         print(e)
         return e
@@ -101,6 +101,31 @@ def op_requests(url,header,para='',verify=True,timeout=60):
 
 
 
+def op_sel(web):
+    '''Use selenium + chromedriver to scrap web
+    Put chromedriver into Python folder
+    Need to explicit driver.quit() after invocation
+    '''
+    chrome_options = Options()  
+    chrome_options.add_argument("headless") 
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+
+    # chrome_options.add_argument("no-sandbox") 
+    # chrome_options.add_argument('user-data-dir="E:\\xm"')   
+    # cpath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+    # chrome_options.binary_location = cpath    
+    # if log != '':
+    cd_arg = [f"--log-path=j:\c.log","--verbose"]
+    # chrome_options.add_argument('log-path=j:\\c.log')
+    # chrome_options.add_argument('verbose')
+    driver = webdriver.Chrome(
+            # executable_path="J:\\DOC\\GH\\test\\chromedriver.exe",
+            # service_args=cd_arg,  # this work
+            options=chrome_options)  
+    driver.get(web)  
+    driver.switch_to.frame('contentFrame')
+    
+    driver.quit()
 
 def saveHtml(file_name,weblink,header):
     '''Save web page'''
