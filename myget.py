@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# Version: 2019030
+# Version: 20190916
 
 # bug 404 forbidden
 
@@ -14,6 +14,7 @@ import requests
 from urllib.parse import urlparse
 from urllib import error
 import urllib.request as req
+from concurrent import futures as cf
 
 # customized module
 from mytool import mywait
@@ -67,7 +68,7 @@ def pbar(blocks, block_size, total_size):
         dlsize = block_size*blocks
         if dlsize > total_size: dlsize = total_size
         rate = dlsize/total_size
-        percentrate = str(math.floor(100*rate))+'%'  
+        percentage = str(math.floor(100*rate))+'%'  
         width = int(get_console_width()/2-18)
         # print(width)
         # width = 40
@@ -87,7 +88,7 @@ def pbar(blocks, block_size, total_size):
             ds = str(dlsize) 
             unit = 'B'          
         e = '\n' if rate == 1 else '\r'
-        sys.stdout.write(bar+' '+percentrate+' '+ds+'/'+ts+unit+e)
+        sys.stdout.write(bar+' '+percentage+' '+ds+'/'+ts+unit+e)
     sys.stdout.flush()
 
 
@@ -122,24 +123,38 @@ def dl(url,out=None,pbar=pbar):
         shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
  
 
-def simpledl(file_url, file_name:str='',verify:bool=True):
+def simpledl(file_url,folder='',file_name:str='',verify:bool=True):
     '''download file by using requests
     open in binary mode, no progress bar
     '''
     if file_name == '':
         file_name = file_url.split('/')[-1]
+    if folder != '':
+        fullpath = os.path.join(folder,file_name)
+    else:
+        fullpath = file_name
+    # print(fullpath)
+    if os.path.exists(fullpath):
+        return False
     try:
-        response = requests.get(file_url,verify=verify)             # get request
+        response = requests.get(file_url,verify=verify,timeout=100)             # get request
     except requests.exceptions.ConnectionError as e:
         # print(e)
         mywait(2)
         try:
-            response = requests.get(file_url,verify=verify)             # get request
+            response = requests.get(file_url,verify=verify,timeout=100) 
         except:
-            return e
-    with open(file_name, "wb") as file:
-        file.write(response.content)             # write to file
+            raise
+    with open(fullpath, "wb") as f:
+        f.write(response.content)             # write to file
 
+
+def download_cf(pic_list,ppath,file_name='',maxworkers=10):
+    '''Concurrent.future download'''
+    workers = min(maxworkers,len(pic_list))
+    with cf.ThreadPoolExecutor(workers) as ex:
+        to_do = [ ex.submit(simpledl,pic,ppath,file_name) for pic in pic_list ]
+        done_iter = cf.as_completed(to_do)
 
 
 if __name__ == "__main__":

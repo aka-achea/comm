@@ -9,10 +9,10 @@ Module for misc tool
 '''
 
 
-import time,sys
-import pyautogui as auto
-import win32con
-import win32clipboard as wincld
+# import time,sys
+# import pyautogui as auto
+# import win32con
+# import win32clipboard as wincld
 
 
 def mytimer(label='',trace=True):
@@ -36,10 +36,22 @@ def mytimer(label='',trace=True):
 
 def mywait(n):
     '''Wait for n seconds'''
+    import time
     for i in range(n):
-        space = 1 if (60-i) > 9 else 2
-        sys.stdout.write('Wait'+' '*space+str(n-i)+'\r')
+        msg = f'Wait {n-i}'
+        print(msg,end='\r')
         time.sleep(1)
+        # sys.stdout.write('\x08'*len(msg)+' '*len(msg)+'\x08'*len(msg))
+        print(' '*len(msg),end='\r')
+
+
+
+def mybar(dots,total):
+    bar = '▇'*dots+'--'*(total-dots)
+    percentage = f'{dots}/{total}'
+    msg = bar+' '+percentage 
+    print(msg, end='\r')
+
 
 
 def combinekey(a,b):
@@ -100,5 +112,7 @@ def get_text_clipboard():
 
 
 if __name__ == "__main__":
-    f = r'M:\GH\a.txt'
-    remove_emptyline_file(f)
+    # f = r'M:\GH\a.txt'
+    # remove_emptyline_file(f)
+    for x in range(10000):
+        mybar(x,10000)
