@@ -35,6 +35,7 @@ pytesseract==0.3.0
 python-dateutil==2.8.1
 PyTweening==1.0.3
 pytz==2019.3
+pywin32==227
 pywin32-ctypes==0.2.0
 requests==2.22.0
 selenium==3.141.0

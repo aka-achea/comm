@@ -9,10 +9,11 @@ Module for misc tool
 '''
 
 
-# import time,sys
-# import pyautogui as auto
-# import win32con
-# import win32clipboard as wincld
+import time
+import sys
+import pyautogui as auto
+import win32con
+import win32clipboard as wincld
 
 
 def mytimer(label='',trace=True):

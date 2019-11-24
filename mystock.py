@@ -1,10 +1,23 @@
+
+
+__version__ = 20191124
+
+
 from pprint import pprint
 import requests
 import json
 import functools
 import time
+import datetime
 
-today = time.strftime('%Y-%m-%d',time.localtime())
+
+def stock_day():
+    '''Get stock open last day'''
+    # day = time.strftime('%Y-%m-%d %w',time.localtime())
+    today = datetime.date.today()
+    while datetime.datetime.weekday(today) > 4:
+        today -= datetime.timedelta(days=1)
+    return today
 
 
 def stock_ifzq(stock_code,start_date,end_date,limit=None)->list:
@@ -26,7 +39,7 @@ def stock_ifzq(stock_code,start_date,end_date,limit=None)->list:
     '''开盘，收盘，最高，最低，量'''
 
 
-stock_today = functools.partial(stock_ifzq,start_date=today,end_date=today)
+stock_today = functools.partial(stock_ifzq,start_date=stock_day(),end_date=stock_day())
 
 
 def today_close(stock_code):
@@ -35,6 +48,7 @@ def today_close(stock_code):
 
  
 if __name__ == '__main__':
-    stock_code = 'sz510510'
-    a = today_close(stock_code)
-    print(a)
+    # stock_code = 'sz510510'
+    # a = today_close(stock_code)
+    # print(a)
+    stock_day()
