@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-#version: 20190804
+__version__ = 20191124
 
 '''
 Module for processing string
@@ -20,7 +20,7 @@ else:
 
 
 def batchremovestr(tlist:list,text):
-    '''Remove words in tlist from text'''
+    '''Remove list of words in tlist from text'''
     for t in tlist:
         text = text.replace(t,'')
     return text.strip()
