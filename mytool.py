@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-#version 20190827
+__version__ = 20191208
 
 
 '''
@@ -46,13 +46,11 @@ def mywait(n):
         print(' '*len(msg),end='\r')
 
 
-
 def mybar(dots,total):
     bar = '▇'*dots+'--'*(total-dots)
     percentage = f'{dots}/{total}'
     msg = bar+' '+percentage 
     print(msg, end='\r')
-
 
 
 def combinekey(a,b):
@@ -65,18 +63,19 @@ def combinekey(a,b):
 
 def capture(img,trys=10,confidence=0.9):  
     '''Find botton location'''  
-    # pic = os.path.join(wp,img+'.png')
     trytime = 1
     while trytime < trys:
         try:
             button = auto.locateCenterOnScreen(img,grayscale=True,confidence=confidence)
+            if button == None:
+                continue
             time.sleep(1)
             break            
-        except TypeError:
-            time.sleep(15)
-            trytime += 1
-            print(f'try to locate {img} {str(trytime)}')
-            continue
+        # except TypeError:
+        #     time.sleep(15)
+        #     trytime += 1
+        #     print(f'try to locate {img} {str(trytime)}')
+        #     continue
         except OSError as e:
             print(e)
             return e
@@ -85,6 +84,7 @@ def capture(img,trys=10,confidence=0.9):
         button = None
         # return f"Max tries reach, not able to locate option {img}"
         # raise(f'Find no {img}')
+    # print(button)
     return button
 
 

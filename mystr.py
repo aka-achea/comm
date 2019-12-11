@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-__version__ = 20191124
+__version__ = 20191207
 
 '''
 Module for processing string
 '''
 
-import sys
+import sys,os
 
 from mylog import mylogger,get_funcname
 
@@ -20,7 +20,7 @@ else:
 
 
 def batchremovestr(tlist:list,text):
-    '''Remove list of words in tlist from text'''
+    '''Remove word in text list from text'''
     for t in tlist:
         text = text.replace(t,'')
     return text.strip()
@@ -38,24 +38,6 @@ def fnamechecker(text)->str:
     tlist = [('?', u'？'),('/', u'／'),('|', ''),(':', u'∶'),('*', u'×'),
                 ('\n', ''),('\\', u'＼'),('"', u'＂'),('\t',' ')]    
     return batchreplacestr(tlist,text)
-
-
-# def fnamechecker(text)->str:
-#     '''Replace reserved charactor in Windows path with other UTF8 charactor'''
-#     ml = mylogger(logfile,get_funcname()) 
-#     #file_name = re.sub(r'\s*:\s*', u' - ', file_name)    # for FAT file system
-#     before = text
-#     tlist = [('?', u'？'),('/', u'／'),('|', ''),(':', u'∶'),('*', u'×'),
-#                 ('\n', ''),('\\', u'＼'),('"', u'＂')]
-#     #text = text.replace('\'', u'＇')
-#     for t,n in tlist:
-#         text = text.replace(t,n)
-#     text = text.strip()
-#     #file_name = file_name.replace('$', '\\$')    # for command, see issue #7
-#     after = text
-#     if before != after :
-#         ml.debug(f'{before} --> {after}')
-#     return text
 
 
 def remove_emptyline(text):
@@ -80,13 +62,16 @@ def remove_emptyline_file(f)->str:
 
 def remove_dupline(file):
     '''Remove duplicate line in the file (UTF8)'''
-    pass
-#     with open(file,'r',encoding='utf-8') as f:
-#         lines = f.readlines()
-#         newlines = { for l in lines}
+    os.rename(file,file+'.old') 
+    with open(file+'.old','r',encoding='utf-8') as f:
+        lines = f.readlines()
+        newlines = { line for line in lines }
+    with open(file,'w',encoding='utf-8') as f:
+        f.writelines(newlines)
 
 
 def splitall(seplist,text):
+    '''Split text from seplist'''
     for sep in seplist:
         text = text.replace(sep,',')
     return [x for x in text.split(',') if x]
@@ -94,8 +79,6 @@ def splitall(seplist,text):
 
 if __name__=='__main__':
     # text1 = 'ル・デ'
-    text = '发行时间：2019-06-23'
-    seplist = ['：','-']
-    r = splitall(seplist, text)
-    print(r)
+    t = r'L:\movie.txt'
+    remove_dupline(t)
    

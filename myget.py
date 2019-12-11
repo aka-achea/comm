@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# Version: 20190916
+__version__ = 20191204
 
 # bug 404 forbidden
 
@@ -14,7 +14,8 @@ import requests
 from urllib.parse import urlparse
 from urllib import error
 import urllib.request as req
-from concurrent import futures as cf
+# from concurrent import futures as cf
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # customized module
 from mytool import mywait
@@ -149,12 +150,12 @@ def simpledl(file_url,folder='',file_name:str='',verify:bool=True):
         f.write(response.content)             # write to file
 
 
-def download_cf(pic_list,ppath,file_name='',maxworkers=10):
+def download_cf(pic_link_list,ppath,file_name='',maxworkers=10):
     '''Concurrent.future download'''
-    workers = min(maxworkers,len(pic_list))
-    with cf.ThreadPoolExecutor(workers) as ex:
-        to_do = [ ex.submit(simpledl,pic,ppath,file_name) for pic in pic_list ]
-        done_iter = cf.as_completed(to_do)
+    workers = min(maxworkers,len(pic_link_list))
+    with ThreadPoolExecutor(workers) as ex:
+        to_do = [ ex.submit(simpledl,pic,ppath,file_name) for pic in pic_link_list ]
+        done_iter = as_completed(to_do)
 
 
 if __name__ == "__main__":

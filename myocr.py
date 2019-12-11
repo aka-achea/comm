@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-#version 20190730
+__version__ = 20190730
 
 from PIL import Image
 import pytesseract
 import os,sys
 import cv2
-# from matplotlib import pyplot as plt
+import argparse
+from matplotlib import pyplot as plt
 # import difflib
 # import numpy as np
 
@@ -79,14 +80,14 @@ def cv2plt(img):
     return cv2.merge([r,g,b])
 
 
-def myocr_cv(pic,book=False,lang='chi_sim'):
-
+def myocr_cv(pic,book=True,lang='chi_sim',debug=False):
+    '''Use cv2 for OCR'''
     img = cv2.imread(pic,0)        #灰度图
     if book:
         img = denoise_cv_med(img,5)    #中值消噪    
         img = denoise_cv_gaus(img,5)   #高斯过滤
         img = denoise_cv_bilat(img)    #双边过滤
-        img = denoise_cv_gausthrold(img)    #高斯二值化               
+        # img = denoise_cv_gausthrold(img)    #高斯二值化               
         img = denoise_cv_gaus(img,5)   #高斯过滤
         img = denoise_cv_med(img,5)    #中值消噪   
 
@@ -100,26 +101,27 @@ def myocr_cv(pic,book=False,lang='chi_sim'):
     print('='*10)
     text = pytesseract.image_to_string(img,lang=lang)
     text = remove_emptyline(text)
-    # print(text)
-
-    # plt.imshow(img,'gray')
-    # plt.xticks([]),plt.yticks([])
-    # plt.show()
-
+    print(text)
+    if debug:
+        plt.imshow(img,'gray')
+        plt.xticks([]),plt.yticks([])
+        plt.show()
     return text
 
+
 def main():
-    # print(len(sys.argv))
-    if len(sys.argv) == 1:
-        book = False
-    elif sys.argv[1] == 'b':
-        book = True
-    else:
-        book = False    
+    # parser = argparse.ArgumentParser(description = 'OCR tool')
+    # group = parser.add_mutually_exclusive_group()
+    # group.add_argument('-d',action="store_true", help='Directory')
+    # args = parser.parse_args()
 
-    pic = input(">>")
-    text = myocr_cv(pic,book)
-
+    # if args.d :
+    #     pass
+    # else:
+    pic = sys.argv[1]
+    text = myocr_cv(pic)
+    if input() == '':
+        pass
 
 
 if __name__ == "__main__":

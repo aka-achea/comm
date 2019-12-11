@@ -12,7 +12,7 @@ from PIL import Image
 import imageio
 import numpy as np
 import os
-import pyfiglet
+
 
 base = np.array([
     [0,0,0,0,0,0,0],
@@ -203,6 +203,7 @@ def pic2char(img):
 
 def figletter(word):  
     '''create geek letter'''
+    import pyfiglet
     result = pyfiglet.figlet_format(str(word), font = "standard"  ) 
     print(result)
     return result
