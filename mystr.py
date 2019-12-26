@@ -60,14 +60,24 @@ def remove_emptyline_file(f)->str:
             print(idx, line)
 
 
-def remove_dupline(file):
+# def remove_dupline(file):
+#     '''Remove duplicate line in the file (UTF8)'''
+#     os.rename(file,file+'.old') 
+#     with open(file+'.old','r',encoding='utf-8') as f:
+#         lines = f.readlines()
+#         newlines = { line for line in lines }
+#     with open(file,'w',encoding='utf-8') as f:
+#         f.writelines(newlines)
+
+def remove_dupline(filename):
     '''Remove duplicate line in the file (UTF8)'''
-    os.rename(file,file+'.old') 
-    with open(file+'.old','r',encoding='utf-8') as f:
+    os.rename(filename,filename+'.old') 
+    with open(filename+'.old','r',encoding='utf-8') as f:
         lines = f.readlines()
         newlines = { line for line in lines }
-    with open(file,'w',encoding='utf-8') as f:
-        f.writelines(newlines)
+    print(newlines, file=filename)
+    # with open(file,'w',encoding='utf-8') as f:
+    #     f.writelines(newlines)
 
 
 def splitall(seplist,text):
@@ -75,6 +85,34 @@ def splitall(seplist,text):
     for sep in seplist:
         text = text.replace(sep,',')
     return [x for x in text.split(',') if x]
+
+
+def dedupe(items, key=None):
+    '''dedup from a sequence while maintain order'''
+    seen = set()
+    for item in items:
+        val = item if key is None else key(item)
+        if val not in seen:
+            yield item
+            seen.add(val)
+    return seen
+
+
+def filterstart(file,start):
+    from itertools import dropwhile
+    with open(file) as f:
+        for line in dropwhile(lambda line: line.startswith(start),f):
+            print(line,end='')
+
+
+import heapq
+def merge_file(f1,f2,outfile):
+    '''f1,f2 need sorted first'''
+    with open(f1, 'rt') as file1, \
+        open(f2, 'rt') as file2, \
+        open(outfile, 'wt') as outf:
+        for line in heapq.merge(file1, file2):
+            outf.write(line)
 
 
 if __name__=='__main__':
