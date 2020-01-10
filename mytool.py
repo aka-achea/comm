@@ -14,7 +14,7 @@ import sys
 import pyautogui as auto
 import win32con
 import win32clipboard as wincld
-
+from functools import wraps
 
 def mytimer(label='',trace=True):
     '''Timer decorator'''
@@ -33,6 +33,22 @@ def mytimer(label='',trace=True):
                 print( format % values )
             return result
     return Timer
+
+
+
+def timethis(func):
+    '''
+    Decorator that reports the execution time.
+    '''
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(func.__name__, end-start)
+        return result
+    return wrapper
+
 
 
 def mywait(n):

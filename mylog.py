@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-# Version: 20190506
+__Version__ = 20200110
 
 # CRITICAL    50
 # ERROR   40
@@ -24,7 +24,7 @@ line 1037 add the following to fix \xa0 issue
 
 import logging
 import coloredlogs
-import functools
+from functools import wraps
 import inspect
 import unicodedata
 import sys
@@ -64,6 +64,26 @@ def logwrap(logfile):
             return func(*args, **kw)
         return wrapper
     return decorator
+
+def logged(func=None, *, level=logging.DEBUG, name=None, message=None):
+    '''
+    Add logging to a function. level is the logging
+    level, name is the logger name, and message is the
+    log message. If name and message aren't specified,
+    they default to the function's module and name.
+    '''
+    if func is None:
+        return partial(logged, level=level, name=name, message=message)
+    logname = name if name else func.__module__
+    log = logging.getLogger(logname)
+    logmsg = message if message else func.__name__
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        log.log(level, logmsg)
+        return func(*args, **kwargs)
+    return wrapper
+
 
 class mylogger():
     def __init__(self,logfile,funcname,logfilelevel=10):
