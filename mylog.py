@@ -65,6 +65,7 @@ def logwrap(logfile):
         return wrapper
     return decorator
 
+
 def logged(func=None, *, level=logging.DEBUG, name=None, message=None):
     '''
     Add logging to a function. level is the logging
@@ -100,7 +101,7 @@ class mylogger():
         # self.logger.propagate = False
         coloredlogs.DEFAULT_LEVEL_STYLES = levelmap 
         coloredlogs.DEFAULT_LOG_FORMAT = '%(message)s'
-        coloredlogs.install(level='info')  
+        coloredlogs.install(level='debug')  
         # coloredlogs.install(level='info',logger=self.logger)  
 
     def debug(self,msg):
@@ -115,6 +116,7 @@ class mylogger():
         self.logger.critical(msg)
     def verbose(self,msg):
         self.logger.debug(msg)
+
 
 class myconlog():
     def __init__(self):

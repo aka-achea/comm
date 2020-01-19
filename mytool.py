@@ -14,41 +14,39 @@ import sys
 import pyautogui as auto
 import win32con
 import win32clipboard as wincld
-from functools import wraps
-
-def mytimer(label='',trace=True):
-    '''Timer decorator'''
-    class Timer:
-        def __init__(self,func):
-            self.func = func
-            self.alltime = 0
-        def __call__(self,*args,**kargs):
-            start = time.process_time()
-            result = self.func(*args,**kargs)
-            elapsed = time.process_time() - start
-            self.alltime += elapsed
-            if trace:
-                format = '%s %s: %.5f, %.5f'
-                values = (label, self.func.__name__,elapsed,self.alltime)
-                print( format % values )
-            return result
-    return Timer
 
 
+class myTimer:
+    def __init__(self, func=time.perf_counter):
+        self.elapsed = 0.0
+        self._func = func
+        self._start = None
 
-def timethis(func):
-    '''
-    Decorator that reports the execution time.
-    '''
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = func(*args, **kwargs)
-        end = time.time()
-        print(func.__name__, end-start)
-        return result
-    return wrapper
+    def start(self):
+        if self._start is not None:
+            raise RuntimeError('Already started')
+        self._start = self._func()
 
+    def stop(self):
+        if self._start is None:
+            raise RuntimeError('Not started')
+        end = self._func()
+        self.elapsed += end - self._start
+        self._start = None
+
+    def reset(self):
+        self.elapsed = 0.0
+
+    @property
+    def running(self):
+        return self._start is not None
+
+    def __enter__(self):
+        self.start()
+        return self
+
+    def __exit__(self, *args):
+        self.stop()
 
 
 def mywait(n):
