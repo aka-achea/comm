@@ -11,7 +11,7 @@ from urllib.error import URLError
 from mytool import mywait
 
 
-def ran_header(ref=''):
+def ran_header(ref='',host=''):
     '''Generate random HTTP header
     example: ref='http://music.163.com/'
     '''
@@ -54,11 +54,12 @@ def ran_header(ref=''):
     headers = {
         "Accept":"text/html,application/xhtml+xml,application/xml; " \
             "q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Encoding":"text/html",
+        # "Accept-Encoding":"text/html",
         "Accept-Language":"en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,zh-TW;q=0.2",
         "Content-Type":"application/x-www-form-urlencoded",
         "User-Agent":random.choice(user_agents),
         'Referer': ref,
+        'Host':host,
         }
     return headers
 
@@ -94,8 +95,7 @@ def op_requests(url,header,para='',verify=True,timeout=60):
     except requests.exceptions.ReadTimeout as e:
         raise
     except requests.exceptions.ConnectionError as e:
-        print(e)
-        return e
+        raise
         # html.content
     return html
 
@@ -123,8 +123,7 @@ def op_sel(web):
             # service_args=cd_arg,  # this work
             options=chrome_options)  
     driver.get(web)  
-    driver.switch_to.frame('contentFrame')
-    
+    driver.switch_to.frame('contentFrame')    
     driver.quit()
 
 def saveHtml(file_name,weblink,header):

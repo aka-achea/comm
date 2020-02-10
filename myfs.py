@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-# version: 20190910
+__version__ = 20200130
 
 '''
 Module for file common operation
@@ -9,14 +9,20 @@ Module for file common operation
 
 import shutil
 import os
-import fnmatch
+from fnmatch import fnmatch
+
+from os import listdir
+from os.path import join as pjoin
+from os.path import isdir as pisdir
+from os.path import isfile as pisfile
+from os.path import exists as pexists
 
 
 def g_dsize(folderpath): 
     '''get folder total size'''
     size = 0
     for root, dirs, files in os.walk(folderpath):
-        size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
+        size += sum([os.path.getsize(pjoin(root, name)) for name in files])
     return size
 
 
@@ -25,7 +31,7 @@ def g_fsize(folderpath):
     adict = {}
     for root, dirs, files in os.walk(folderpath):
         for name in files:
-            size = os.path.getsize(os.path.join(root, name))
+            size = os.path.getsize(pjoin(root, name))
             if name[-3:].upper() not in ['JPG','SRT','HTM','PEG','ENT']: 
                 print(name,size)
                 adict[name] = size
@@ -34,8 +40,8 @@ def g_fsize(folderpath):
 
 def d_move(src,dstparent):
     '''Move src folder under dst folder, if exist then compare/remove'''
-    # dst = os.path.join(parent,src.split('\\')[-1])
-    dst = os.path.join(dstparent,os.path.split(src)[1])
+    # dst = pjoin(parent,src.split('\\')[-1])
+    dst = pjoin(dstparent,os.path.split(src)[1])
     if os.path.exists(dst):
         ds = g_dsize(dst)/(1024*1024) #MB
         ss = g_dsize(src)/(1024*1024)
@@ -72,48 +78,48 @@ def f_move(src,dst):
 
 def batch_rename(folderpath,oldcharactor,newcharactor):  
     '''Batch replace file name charactor in folder'''
-    for f in os.listdir(folderpath):
-        fp = os.path.join(folderpath,f)
-        if os.path.isfile(fp):
-        # print(os.path.join(folderpath,f[:-4]+'c.jpg'))
+    for f in listdir(folderpath):
+        fp = pjoin(folderpath,f)
+        if pisfile(fp):
+        # print(pjoin(folderpath,f[:-4]+'c.jpg'))
             nf = f.replace(oldcharactor,newcharactor)
-            os.rename(fp,os.path.join(folderpath,nf))
+            os.rename(fp,pjoin(folderpath,nf))
 
 
 def ucase(folderpath):
     '''Upper name all file in folder'''
-    for f in os.listdir(folderpath):
+    for f in listdir(folderpath):
         nfile = f.upper()
         if nfile != f :        
-            src = os.path.join(folderpath,f)        
-            dst = os.path.join(folderpath,nfile)        
+            src = pjoin(folderpath,f)        
+            dst = pjoin(folderpath,nfile)        
             shutil.move(src,dst)
 
 
 def comparedir(question,baseline):
     '''Compare file in question folder and baseline folder'''
-    return set(os.listdir(question))&set(os.listdir(baseline))     
+    return set(listdir(question))&set(listdir(baseline))     
 
 
 def clean_f(path,suffix):
     '''Clean File with specified suffix'''
-    for f in os.listdir(path):
-        if fnmatch.fnmatch(f,'*.'+suffix):
+    for f in listdir(path):
+        if fnmatch(f,'*.'+suffix):
             os.remove(f)
 
 
 def count_f(path,suffix):
     '''Count file with specified suffix'''
     c = 0
-    for f in os.listdir(path):        
-        if fnmatch.fnmatch(f,'*.'+suffix): 
+    for f in listdir(path):        
+        if fnmatch(f,'*.'+suffix): 
             c += 1
     return c
                 
 
 
 if __name__ == "__main__":
-    p = r'E:\AWS training 2019'
-    # re_file(p,'JPEG','jpg')    
-    print(g_dsize(p))
+    p = r'D:\DL\X'
+    batch_rename(p,'纪元','')    
+    # print(g_dsize(p))
     
