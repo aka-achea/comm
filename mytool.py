@@ -14,7 +14,8 @@ import sys
 import pyautogui as auto
 import win32con
 import win32clipboard as wincld
-
+import openpyxl
+from collections import namedtuple
 
 class myTimer:
     def __init__(self, func=time.perf_counter):
@@ -124,10 +125,31 @@ def get_text_clipboard():
     return text_result
 
 
+def build_namedict(xls):
+    '''Automatically build named dict from 1st sheet of xls'''
+    wb = openpyxl.load_workbook(xls)
+    sheets = wb.sheetnames
+    sheet = wb[sheets[0]]
+    properties = []
+    c = 0
+    while True:
+        c += 1
+        if v := sheet.cell(row=1,column=c).value:
+            properties.append(v.replace(' ',''))
+        else:
+            break
+    # for a in properties: print(a)
+    print(properties)
+    tagdic = namedtuple(sheets[0],properties)
+    namedict = []
+    for r in range(2,sheet.max_row):
+            
+        tagdic()
+
 
 
 if __name__ == "__main__":
     # f = r'M:\GH\a.txt'
     # remove_emptyline_file(f)
-    for x in range(10000):
-        mybar(x,10000)
+    xls = r'E:\UT\iam.xlsx'
+    build_namedict(xls)

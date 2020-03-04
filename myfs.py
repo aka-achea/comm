@@ -10,7 +10,7 @@ Module for file common operation
 import shutil
 import os
 from fnmatch import fnmatch
-
+import json
 from os import listdir
 from os.path import join as pjoin
 from os.path import isdir as pisdir
@@ -32,9 +32,9 @@ def g_fsize(folderpath):
     for root, dirs, files in os.walk(folderpath):
         for name in files:
             size = os.path.getsize(pjoin(root, name))
-            if name[-3:].upper() not in ['JPG','SRT','HTM','PEG','ENT']: 
-                print(name,size)
-                adict[name] = size
+            if name[-3:].upper() not in ['SRT','HTM','ENT','2TS']: 
+                # print(name.upper(),size)
+                adict[name.upper()] = size
     return adict
 
 
@@ -117,6 +117,17 @@ def count_f(path,suffix):
     return c
                 
 
+def jdump(outfile,data):
+    '''Save json data to outfile'''
+    with open(outfile,'w',encoding='utf-8') as f:
+        json.dump(data,f,ensure_ascii=False,indent=2)
+
+
+def jload(infile):
+    '''Load json data from infile'''
+    with open(infile,'r',encoding='utf-8') as f:
+        j = json.loads(f.read())
+    return j
 
 if __name__ == "__main__":
     p = r'D:\DL\X'
