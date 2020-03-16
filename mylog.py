@@ -31,9 +31,6 @@ import sys
 
 
 
-
-
-
 levelmap = {
             #'debug': {'color': 'magenta','bold': True},
             'info': {'color': 'green','bold': True},
@@ -186,13 +183,13 @@ if __name__=='__main__': #Usage
     # logfilelevel = 10 # Debug
 
     # test mylogger
-    # ml = mylogger(logfile,get_funcname())   
-    # ml.debug('This is Debug')
-    # ml.info('ール・デ')
-    # ml.error('error log')
-    # ml.warning('warning log')
-    # ml.critical("this is a critical message")
-    # ml.verbose('vvvvv')
+    ml = mylogger(logfile,get_funcname())   
+    ml.debug('This is Debug')
+    ml.info('ール・デ')
+    ml.error('error log')
+    ml.warning('warning log')
+    ml.critical("this is a critical message")
+    ml.verbose('vvvvv')
 
     # # test myconlog
     # ml = myconlog() 
@@ -204,11 +201,11 @@ if __name__=='__main__': #Usage
     # ml.verbose('vvvvv')
 
 
-    # test myconlog
-    ml = myfilelog(logfile) 
-    ml.debug('This is Debug')
-    ml.info('ール・デ')
-    ml.error('error log')
-    ml.warning('warning log')
-    ml.critical("this is a critical message")
-    ml.verbose('vvvvv')
+    # test myfilelog
+    # ml = myfilelog(logfile) 
+    # ml.debug('This is Debug')
+    # ml.info('ール・デ')
+    # ml.error('error log')
+    # ml.warning('warning log')
+    # ml.critical("this is a critical message")
+    # ml.verbose('vvvvv')
