@@ -77,14 +77,16 @@ def op_simple(URL,header)->list:#
         sys.stdout.write('    '+'\r')
         status = html.getcode()
     except HTTPError as e: #5xx,4xx
-        return 0,e
+        print(e)
+        return e
     except URLError as e:
         print('Host no response, try again')
         mywait(30)
         try:
             html = urlopen(req)
         except:
-            return 0,e
+            print(e)
+            return e
     return html,status 
 
 
