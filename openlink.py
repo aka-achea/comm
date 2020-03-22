@@ -11,7 +11,7 @@ from urllib.error import URLError
 from mytool import mywait
 
 
-def ran_header(ref='',host=''):
+def ran_header(ref='',host='',org=''):
     '''Generate random HTTP header
     example: ref='http://music.163.com/'
     '''
@@ -60,6 +60,7 @@ def ran_header(ref='',host=''):
         "User-Agent":random.choice(user_agents),
         'Referer': ref,
         'Host':host,
+        'Origin':org
         }
     return headers
 

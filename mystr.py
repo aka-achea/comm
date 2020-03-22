@@ -9,7 +9,7 @@ Module for processing string
 
 import sys,os
 
-from mylog import mylogger,get_funcname
+from mylog import mylogger
 
 
 if sys.platform == 'win32':
