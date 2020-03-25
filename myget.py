@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-__version__ = 20191204
+__version__ = 20200325
 
 # bug 404 forbidden
 
@@ -16,6 +16,7 @@ from urllib import error
 import urllib.request as req
 # from concurrent import futures as cf
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from tqdm import tqdm
 
 # customized module
 from mytool import mywait
@@ -150,13 +151,21 @@ def simpledl(file_url,folder='',file_name:str='',verify:bool=True):
         f.write(response.content)             # write to file
 
 
-def download_cf(pic_link_list,ppath,file_name='',maxworkers=10):
-    '''Concurrent.future download'''
-    workers = min(maxworkers,len(pic_link_list))
-    with ThreadPoolExecutor(workers) as ex:
-        to_do = [ ex.submit(simpledl,pic,ppath,file_name) for pic in pic_link_list ]
-        done_iter = as_completed(to_do)
+# def download_cf(link_list,ppath,file_name='',maxworkers=10):
+#     '''Concurrent.future download'''
+#     workers = min(maxworkers,len(link_list))
+#     with ThreadPoolExecutor(workers) as ex:
+#         to_do = [ ex.submit(simpledl,link,ppath,file_name) for link in link_list ]
+#         done_iter = as_completed(to_do)
 
+
+def download_cf(link_list,ppath,file_name='',maxworkers=10):
+    '''Concurrent.future download'''
+    workers = min(maxworkers,len(link_list))
+    with ThreadPoolExecutor(workers) as ex:
+        to_do = [ ex.submit(simpledl,link,ppath,file_name) for link in link_list ]
+        done_iter = as_completed(to_do)
+        list(tqdm(done_iter,total=len(to_do),bar_format='{n_fmt}/{total_fmt}{l_bar}{bar}'))
 
 if __name__ == "__main__":
     # url = 'http://python.org/'

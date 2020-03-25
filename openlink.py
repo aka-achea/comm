@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 #coding:utf-8
-#Version: 20190729
 #tested in win
+
+__version__ = 20200322
 
 import random,time,requests,sys
 from urllib.request import urlopen,Request,HTTPError

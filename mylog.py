@@ -9,7 +9,7 @@ import logging
 from colorama import Fore,Style,init
 # from cmreslogging.handlers import CMRESHandler
 
-__Version__ = 20200322
+__Version__ = 20200325
 
 """
 CRITICAL50
@@ -22,7 +22,9 @@ NOTSET  0
 
 
 class mylogger():
-    '''Log to file and console'''
+    '''Log to file and console\n
+    ml = mylogger(logfile,get_funcname())
+    '''
     def __init__(self,logfile=None,funcname=None):
         init(autoreset=True)
         if logfile:
@@ -34,7 +36,7 @@ class mylogger():
             self.logger.setLevel('DEBUG')
             self.logger.addHandler(self.fh) 
 
-    def debug(self,msg):
+    def dbg(self,msg):
         # print(Fore.RED +Style.BRIGHT+ msg)
         if self.logfile: self.logger.debug(msg)
     
