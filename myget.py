@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-__version__ = 20200325
+__version__ = 20200326
 
 # bug 404 forbidden
 
@@ -165,7 +165,7 @@ def download_cf(link_list,ppath,file_name='',maxworkers=10):
     with ThreadPoolExecutor(workers) as ex:
         to_do = [ ex.submit(simpledl,link,ppath,file_name) for link in link_list ]
         done_iter = as_completed(to_do)
-        list(tqdm(done_iter,total=len(to_do),bar_format='{n_fmt}/{total_fmt}{l_bar}{bar}'))
+        list(tqdm(done_iter,total=len(to_do),bar_format='{n_fmt}/{total_fmt} {l_bar}'))
 
 if __name__ == "__main__":
     # url = 'http://python.org/'
