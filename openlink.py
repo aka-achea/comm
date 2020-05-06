@@ -2,11 +2,12 @@
 #coding:utf-8
 #tested in win
 
-__version__ = 20200322
+__version__ = 20200329
 
 import random,time,requests,sys
 from urllib.request import urlopen,Request,HTTPError
 from urllib.error import URLError
+from tenacity import *
 
 # customized module
 from mytool import mywait
@@ -61,34 +62,29 @@ def ran_header(ref='',host='',org=''):
         "User-Agent":random.choice(user_agents),
         'Referer': ref,
         'Host':host,
-        'Origin':org
+        'Origin':org,
         }
     return headers
 
 # random.randint产生随机整数
 # time.sleep(2 + float(random.randint(1, 100)) / 20)
 
-
+@retry(
+    stop=(stop_after_delay(10)|stop_after_attempt(5)),
+    wait=wait_fixed(2),
+    retry=retry_if_exception_type(URLError)
+    )
 def op_simple(URL,header)->list:# 
     '''use built-in urllib'''
     req = Request(URL,headers=header)
     try:
         html = urlopen(req)
-        sys.stdout.write('Wait'+'\r')
-        time.sleep(random.uniform(2,4))
-        sys.stdout.write('    '+'\r')
         status = html.getcode()
     except HTTPError as e: #5xx,4xx
         print(e)
         return e
     except URLError as e:
         print('Host no response, try again')
-        mywait(30)
-        try:
-            html = urlopen(req)
-        except:
-            print(e)
-            return e
     return html,status 
 
 

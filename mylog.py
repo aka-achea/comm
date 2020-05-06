@@ -9,7 +9,7 @@ import logging
 from colorama import Fore,Style,init
 # from cmreslogging.handlers import CMRESHandler
 
-__Version__ = 20200325
+__Version__ = 20200330
 
 """
 CRITICAL50
@@ -34,27 +34,42 @@ class mylogger():
             self.fh.setFormatter(formatter)
             self.logger = logging.getLogger(funcname)
             self.logger.setLevel('DEBUG')
-            self.logger.addHandler(self.fh) 
+            # self.logger.addHandler(self.fh) 
 
     def dbg(self,msg):
         # print(Fore.RED +Style.BRIGHT+ msg)
-        if self.logfile: self.logger.debug(msg)
+        if self.logfile: 
+            self.logger.addHandler(self.fh) 
+            self.logger.debug(msg)
+            self.logger.removeHandler(self.fh)
     
     def info(self,msg):
-        print(Fore.GREEN +Style.BRIGHT+ msg)
-        if self.logfile: self.logger.info(msg)
+        print(Fore.GREEN +Style.BRIGHT+ str(msg))
+        if self.logfile: 
+            self.logger.addHandler(self.fh) 
+            self.logger.info(msg)
+            self.logger.removeHandler(self.fh)
 
     def warn(self,msg):
         print(Fore.YELLOW +Style.BRIGHT+ msg)
-        if self.logfile: self.logger.warning(msg)
+        if self.logfile:
+            self.logger.addHandler(self.fh) 
+            self.logger.warning(msg)
+            self.logger.removeHandler(self.fh)
 
     def err(self,msg):
         print(Fore.RED +Style.BRIGHT+ msg)
-        if self.logfile: self.logger.error(msg)
+        if self.logfile: 
+            self.logger.addHandler(self.fh) 
+            self.logger.error(msg)
+            self.logger.removeHandler(self.fh)
 
     def critical(self,msg):
         print(Fore.MAGENTA +Style.BRIGHT+ msg)
-        if self.logfile: self.logger.critical(msg)        
+        if self.logfile: 
+            self.logger.addHandler(self.fh) 
+            self.logger.critical(msg)        
+            self.logger.removeHandler(self.fh)
 
 
 def get_funcname():

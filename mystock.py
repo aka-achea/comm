@@ -17,6 +17,7 @@ def stock_day():
     today = datetime.date.today()
     while datetime.datetime.weekday(today) > 4:
         today -= datetime.timedelta(days=1)
+    print(today)
     return today
 
 

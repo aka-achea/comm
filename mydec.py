@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+#coding:utf-8
+#tested in win
+
+__version__ = 20200329
+
 from inspect import signature
 from functools import wraps
 import time
@@ -39,11 +45,12 @@ def timethis(func):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        print(func.__name__, end-start)
+        print(func.__name__, round(end-start,5))
         return result
     return wrapper
 
 
+# not working
 def mytimer(label='',trace=True):
     '''Timer decorator'''
     class Timer:

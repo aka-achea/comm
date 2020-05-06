@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 #coding:utf-8
 # tested in win
-__version__ = 20200326
+
+__version__ = 20200327
 
 # bug 404 forbidden
 
@@ -17,6 +18,7 @@ import urllib.request as req
 # from concurrent import futures as cf
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
+from tenacity import *
 
 # customized module
 from mytool import mywait
@@ -93,71 +95,115 @@ def pbar(blocks, block_size, total_size):
         sys.stdout.write(bar+' '+percentage+' '+ds+'/'+ts+unit+e)
     sys.stdout.flush()
 
-
+@retry(
+    stop=(stop_after_delay(10)|stop_after_attempt(5)),
+    wait=wait_fixed(2),
+    retry=retry_if_exception_type(error.ContentTooShortError)
+    )
 def dl(url,out=None,pbar=pbar):
     '''Download file with progress bar by using urllib   
     use pbar = None to supress process bar
     '''
-    # detect of out is a directory
+    # detect if out is a directory
     outdir = None
-    if out and os.path.isdir(out):
-        outdir = out
+    if os.path.isdir(out):
+        outdir = out # not change dir?
         out = None
-
     fn = out if out else filename_from_url(url)
-
-    if os.path.exists(fn):
-        return f'{fn} --> Already download'
-    else:
+    if not os.path.exists(fn):
         now = str(datetime.datetime.utcnow()).replace(':','')
         tmpname = fn+now+'.tmp'   
-        # opener = req.build_opener()
-        # opener.addheaders = [('user-agent','Mozilla/5.0')]
-        # req.install_opener(opener)
         try:
             local_filename, headers = req.urlretrieve(url,tmpname,pbar )
         except error.ContentTooShortError as e:
-            mywait(5)
-            local_filename, headers = req.urlretrieve(url,tmpname,pbar )
-        # print(headers)
-        # size = int(headers['Content-Length'])
-        # ftype = '.'+str(headers['Content-Type']).split('/')[1]
+            print(e)
         shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
- 
 
+# def dl(url,out=None,pbar=pbar):
+#     '''Download file with progress bar by using urllib   
+#     use pbar = None to supress process bar
+#     '''
+#     # detect of out is a directory
+#     outdir = None
+#     if out and os.path.isdir(out):
+#         outdir = out
+#         out = None
+
+#     fn = out if out else filename_from_url(url)
+
+#     if os.path.exists(fn):
+#         return f'{fn} --> Already download'
+#     else:
+#         now = str(datetime.datetime.utcnow()).replace(':','')
+#         tmpname = fn+now+'.tmp'   
+#         # opener = req.build_opener()
+#         # opener.addheaders = [('user-agent','Mozilla/5.0')]
+#         # req.install_opener(opener)
+#         try:
+#             local_filename, headers = req.urlretrieve(url,tmpname,pbar )
+#         except error.ContentTooShortError as e:
+#             mywait(5)
+#             local_filename, headers = req.urlretrieve(url,tmpname,pbar )
+#         # print(headers)
+#         # size = int(headers['Content-Length'])
+#         # ftype = '.'+str(headers['Content-Type']).split('/')[1]
+#         shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
+
+
+# def simpledl(file_url,folder='',file_name:str='',verify:bool=True):
+#     '''download file by using requests
+#     open in binary mode, no progress bar
+#     '''
+#     if file_name == '':
+#         file_name = file_url.split('/')[-1]
+#     if folder != '':
+#         fullpath = os.path.join(folder,file_name)
+#     else:
+#         fullpath = file_name
+#     # print(fullpath)
+#     if os.path.exists(fullpath):
+#         return False
+#     try:
+#         response = requests.get(file_url,verify=verify,timeout=100)             # get request
+#     except requests.exceptions.ConnectionError as e:
+#         # print(e)
+#         mywait(2)
+#         try:
+#             response = requests.get(file_url,verify=verify,timeout=100) 
+#         except:
+#             raise
+#     with open(fullpath, "wb") as f:
+#         f.write(response.content)             # write to file
+
+@retry(
+    stop=(stop_after_delay(10)|stop_after_attempt(5)),
+    wait=wait_fixed(2),
+    retry=retry_if_exception_type(requests.exceptions.ConnectionError)
+    )
 def simpledl(file_url,folder='',file_name:str='',verify:bool=True):
     '''download file by using requests
     open in binary mode, no progress bar
     '''
-    if file_name == '':
+    if not file_name:
         file_name = file_url.split('/')[-1]
-    if folder != '':
+    if folder:
         fullpath = os.path.join(folder,file_name)
     else:
         fullpath = file_name
-    # print(fullpath)
     if os.path.exists(fullpath):
         return False
     try:
         response = requests.get(file_url,verify=verify,timeout=100)             # get request
     except requests.exceptions.ConnectionError as e:
-        # print(e)
-        mywait(2)
-        try:
-            response = requests.get(file_url,verify=verify,timeout=100) 
-        except:
-            raise
+        print(e)
     with open(fullpath, "wb") as f:
-        f.write(response.content)             # write to file
+        f.write(response.content)   
 
 
-# def download_cf(link_list,ppath,file_name='',maxworkers=10):
-#     '''Concurrent.future download'''
-#     workers = min(maxworkers,len(link_list))
-#     with ThreadPoolExecutor(workers) as ex:
-#         to_do = [ ex.submit(simpledl,link,ppath,file_name) for link in link_list ]
-#         done_iter = as_completed(to_do)
-
+# def download_cfmap(pic_list,ppath):
+#     workers = min(MAX_WORKERS,len(pic_list))
+#     with cf.ThreadPoolExecutor(workers) as ex:
+#         ex.map(download,pic_list,timeout=60)
 
 def download_cf(link_list,ppath,file_name='',maxworkers=10):
     '''Concurrent.future download'''

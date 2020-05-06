@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-__version__ = 20191208
+__version__ = 20200329
 
 
 '''
@@ -16,6 +16,7 @@ import win32con
 import win32clipboard as wincld
 import openpyxl
 from collections import namedtuple
+import sqlite3
 
 class myTimer:
     def __init__(self, func=time.perf_counter):
@@ -57,6 +58,7 @@ def mywait(n):
         msg = f'Wait {n-i}'
         print(msg,end='\r')
         time.sleep(1)
+        # time.sleep(random.uniform(2,4))
         # sys.stdout.write('\x08'*len(msg)+' '*len(msg)+'\x08'*len(msg))
         print(' '*len(msg),end='\r')
 
@@ -147,9 +149,33 @@ def build_namedict(xls):
         tagdic()
 
 
+def ips(ipwithmask):
+    '''Provide subnet information'''
+    import ipaddress
+    interface = ipaddress.IPv4Interface(ipwithmask)
+    nw = interface.network
+    print(f'Subnet: {nw.with_netmask}')
+    print(f'from {nw.network_address} to {nw.broadcast_address} total {nw.num_addresses}')
+    print(f'ChildSubnets: {list([str(x) for x in nw.subnets()])}')
+    print(f'ParentSubnet: {nw.supernet()}')
+
+class dbconn():  
+    def __init__(self,dbfile):        
+        self.dbfile = dbfile 
+
+    def __enter__(self):
+        self.conn = sqlite3.connect(self.dbfile)
+        self.cursor = self.conn.cursor()
+        return self.cursor
+
+    def __exit__(self, type, value, traceback):
+        self.cursor.close()
+        self.conn.commit()
+        self.conn.close()
 
 if __name__ == "__main__":
     # f = r'M:\GH\a.txt'
     # remove_emptyline_file(f)
-    xls = r'E:\UT\iam.xlsx'
-    build_namedict(xls)
+    # xls = r'E:\UT\iam.xlsx'
+    # build_namedict(xls)
+    ips('10.2.4.2/9')

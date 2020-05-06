@@ -1,22 +1,14 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-__version__ = 20191207
+
+__version__ = 20200328
 
 '''
 Module for processing string
 '''
 
 import sys,os
-
-from mylog import mylogger
-
-
-if sys.platform == 'win32':
-    logfile = 'E:\\app.log'
-else:
-    logfile = 'app.log'
-
 
 
 def batchremovestr(tlist:list,text):
@@ -36,7 +28,7 @@ def batchreplacestr(tlist:list,text):
 def fnamechecker(text)->str:
     '''Replace reserved charactor in Windows path with other UTF8 charactor'''
     tlist = [('?', u'？'),('/', u'／'),('|', ''),(':', u'∶'),('*', u'×'),
-                ('\n', ''),('\\', u'＼'),('"', u'＂'),('\t',' ')]    
+            ('\n', ''),('\\', u'＼'),('"', u'＂'),('\t',' ')]    
     return batchreplacestr(tlist,text)
 
 
@@ -60,24 +52,18 @@ def remove_emptyline_file(f)->str:
             print(idx, line)
 
 
-# def remove_dupline(file):
-#     '''Remove duplicate line in the file (UTF8)'''
-#     os.rename(file,file+'.old') 
-#     with open(file+'.old','r',encoding='utf-8') as f:
-#         lines = f.readlines()
-#         newlines = { line for line in lines }
-#     with open(file,'w',encoding='utf-8') as f:
-#         f.writelines(newlines)
-
 def remove_dupline(filename):
     '''Remove duplicate line in the file (UTF8)'''
+    if os.path.exists(filename+'.old'):
+        os.remove(filename+'.old')
     os.rename(filename,filename+'.old') 
     with open(filename+'.old','r',encoding='utf-8') as f:
         lines = f.readlines()
-        newlines = { line for line in lines }
-    print(newlines, file=filename)
-    # with open(file,'w',encoding='utf-8') as f:
-    #     f.writelines(newlines)
+    newlines = set(lines)
+    with open(filename,'w',encoding='utf-8') as f:
+        for x in newlines:
+            f.write(x)
+
 
 
 def splitall(seplist,text):
@@ -105,14 +91,24 @@ def filterstart(file,start):
             print(line,end='')
 
 
-import heapq
+
 def merge_file(f1,f2,outfile):
     '''f1,f2 need sorted first'''
+    import heapq
     with open(f1, 'rt') as file1, \
         open(f2, 'rt') as file2, \
         open(outfile, 'wt') as outf:
         for line in heapq.merge(file1, file2):
             outf.write(line)
+
+
+def remove_comment(file):
+    '''Remove comment #'''
+    import itertools
+    with open(file,'r') as f:
+        string = f.readlines
+        for x in itertools.dropwhile(lambda line:line.startswith("#"), f.split("\n")): 
+            print(x)
 
 
 if __name__=='__main__':
