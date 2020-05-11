@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #coding:utf-8
 #tested in win
-__version__ = 20200329
+__version__ = 20200509
 
 
 '''
@@ -78,15 +78,16 @@ def combinekey(a,b):
     auto.keyUp(b)
 
 
-def capture(img,trys=10,confidence=0.9):  
+def capture(img,trys=10):  
     '''Find botton location'''  
     trytime = 1
     while trytime < trys:
         try:
-            button = auto.locateCenterOnScreen(img,grayscale=True,confidence=confidence)
+            button = auto.locateCenterOnScreen(img,grayscale=True)
             if button == None:
+                trytime += 1
+                time.sleep(1)
                 continue
-            time.sleep(1)
             break            
         # except TypeError:
         #     time.sleep(15)
@@ -107,6 +108,8 @@ def capture(img,trys=10,confidence=0.9):
 
 def clickbutton(img,**args):
     '''click button'''
+    b = str(img).replace('.png','')
+    print(f'Click {b}')
     button = capture(img,**args)
     if isinstance(button,tuple):
         auto.click(button)
