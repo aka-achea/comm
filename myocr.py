@@ -9,7 +9,7 @@ from aip import AipOcr
 
 def init_client():
     '''Initiate Baidu OCR Api'''
-    confile = r'M:\GH\_pri\baidu.ini'
+    confile = r'N:\GH\_pri\baidu.ini'
     config = ConfigParser()
     config.read(confile)
     APP_ID = config.get('BaiduOcr','APP_ID') 
