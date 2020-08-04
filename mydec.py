@@ -96,6 +96,7 @@ def attach_wrapper(obj, func=None):  # Helper function that attaches function as
         return partial(attach_wrapper, obj)
     setattr(obj, func.__name__, func)
     return func
+    
 def log(level, message):  # Actual decorator
     def decorate(func):
         logger = logging.getLogger(func.__module__)  # Setup logger
@@ -119,7 +120,7 @@ def log(level, message):  # Actual decorator
             log_message = f"{func.__name__} - {new_message}"
         return wrapper
     return decorate
-    
+
 # Example Usage
 # @log(logging.WARN, "example-param")
 # def somefunc(args):
