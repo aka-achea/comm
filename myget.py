@@ -117,6 +117,8 @@ def dl(url,out=None,pbar=pbar):
             local_filename, headers = req.urlretrieve(url,tmpname,pbar )
         except error.ContentTooShortError as e:
             print(e)
+        except error.ConnectionResetError as e:
+            print(e)
         shutil.move(tmpname,out) if out else shutil.move(tmpname,fn)
 
 # def dl(url,out=None,pbar=pbar):
