@@ -182,7 +182,7 @@ def dl(url,out=None,pbar=pbar):
     wait=wait_fixed(2),
     retry=retry_if_exception_type(requests.exceptions.ConnectionError)
     )
-def simpledl(file_url,folder='',file_name:str='',verify:bool=True):
+def simpledl(file_url,folder='',file_name:str='',verify:bool=True,headers=None):
     '''download file by using requests
     open in binary mode, no progress bar
     '''
@@ -195,7 +195,7 @@ def simpledl(file_url,folder='',file_name:str='',verify:bool=True):
     if os.path.exists(fullpath):
         return False
     try:
-        response = requests.get(file_url,verify=verify,timeout=100)             # get request
+        response = requests.get(file_url,verify=verify,timeout=100,headers=headers)             # get request
     except requests.exceptions.ConnectionError as e:
         print(e)
     with open(fullpath, "wb") as f:
