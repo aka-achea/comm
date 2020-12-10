@@ -106,10 +106,11 @@ def capture(img,trys=10):
     return button
 
 
-def clickbutton(img,**args):
+def clickbutton(img,debug=False,**args):
     '''click button'''
     b = str(img).replace('.png','')
-    print(f'Click {b}')
+    if debug:
+        print(f'Click {b}')
     button = capture(img,**args)
     if isinstance(button,tuple):
         auto.click(button)
