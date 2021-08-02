@@ -115,4 +115,7 @@ if __name__=='__main__':
     # text1 = 'ル・デ'
     t = r'L:\movie.txt'
     remove_dupline(t)
-   
+
+
+
+

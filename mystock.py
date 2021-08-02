@@ -9,7 +9,9 @@ import json
 import functools
 import time
 import datetime
+from functools import lru_cache
 
+from mydec import timethis
 
 def stock_day():
     '''Get stock open last day'''
@@ -17,7 +19,7 @@ def stock_day():
     today = datetime.date.today()
     while datetime.datetime.weekday(today) > 4:
         today -= datetime.timedelta(days=1)
-    print(today)
+    # print(today)
     return today
 
 
@@ -36,13 +38,15 @@ def stock_ifzq(stock_code,start_date,end_date,limit=None)->list:
         price = data_json['data'][stock_code]['day']
     except KeyError:
         price = data_json['data'][stock_code]['qfqday']
+    print(f'{stock_code} price is {price}')
     return price
     '''开盘，收盘，最高，最低，量'''
 
 
 stock_today = functools.partial(stock_ifzq,start_date=stock_day(),end_date=stock_day())
 
-
+@timethis
+@lru_cache(maxsize=32)
 def today_close(stock_code):
     '''Get today stock close price'''
     return stock_today(stock_code)[0][2]
