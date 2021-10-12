@@ -17,7 +17,7 @@ MarkupSafe==1.1.1
 MouseInfo==0.1.2
 mutagen==1.43.0
 numpy==1.17.4
-opencv-python==4.1.2.30
+opencv-python==4.2.0.32
 openpyxl==3.0.1
 pandas==0.25.3
 pefile==2019.4.18
