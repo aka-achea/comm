@@ -21,7 +21,7 @@ opencv-python==4.1.2.30
 openpyxl==3.0.1
 pandas==0.25.3
 pefile==2019.4.18
-Pillow==6.2.1
+Pillow==9.0.0
 prettytable==0.7.2
 PyAutoGUI==0.9.48
 PyGetWindow==0.0.8
