@@ -26,15 +26,15 @@ def g_dsize(folderpath):
     return size
 
 
-def g_fsize(folderpath): 
-    '''get all file size dict'''
+def g_fsize(folderpath,excludelist=['SRT','HTM','ENT','2TS']): 
+    '''get all file size dict\n
+    default excluding *.srt,htm,ent,2ts
+    '''
     adict = {}
     for root, dirs, files in os.walk(folderpath):
         for name in files:
-            size = os.path.getsize(pjoin(root, name))
-            if name[-3:].upper() not in ['SRT','HTM','ENT','2TS']: 
-                # print(name.upper(),size)
-                adict[name.upper()] = size
+            if name[-3:].upper() not in excludelist: 
+                adict[name.upper()] = os.path.getsize(pjoin(root, name))
     return adict
 
 
@@ -130,7 +130,7 @@ def jload(infile):
     return j
 
 if __name__ == "__main__":
-    p = r'D:\DL\X'
-    batch_rename(p,'纪元','')    
-    # print(g_dsize(p))
+    p = r'D:\DL\_'
+    # batch_rename(p,'纪元','')    
+    print(g_dsize(p))
     
